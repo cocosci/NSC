@@ -39,8 +39,7 @@ Please consider citing our papers if this helps.
 - Project Page - I: https://saige.sice.indiana.edu/research-projects/neural-audio-coding/
 - Project Page - II: http://kaizhen.us/collaborative-quantization
 
-![alt text](https://github.com/cocosci/NSC/blob/master/figure/model_1.png)
-![alt text](https://github.com/cocosci/NSC/blob/master/figure/model_2.png)
+![alt text](https://github.com/cocosci/NSC/blob/master/figure/model_3.png)
 
 # The Code Structure
 
