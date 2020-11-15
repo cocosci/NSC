@@ -4,7 +4,14 @@ VERBOSE = False
 frame_length = 512
 init_alpha = -500
 sample_rate = 16000
-# max_amp_tr = 33.461480140686035  # pure time domain
+
+
+is_pure_time_domain = True
+
+if is_pure_time_domain:
+    max_amp_tr = 33.461480140686035  # pure time domain
+else:
+    max_amp_tr = 22.307652973859113  # lpc time domain
 
 overlap_each_side = 32
 training_data_size = 500000
@@ -12,8 +19,8 @@ selected_ind = [8.0, 16.0, 32.0, 128.0]
 
 
 # scalar_or_vector = 'scalar-2'
-# scalar_or_vector = 'scalar-4'
-scalar_or_vector = 'vector-2'
+scalar_or_vector = 'scalar-4'
+# scalar_or_vector = 'vector-2'
 # scalar_or_vector = 'vector-4'
 
 def data_frame_setup():
@@ -42,7 +49,7 @@ code_len_val, code_book_size_val, bottle_neck_size = data_frame_setup()
 
 
 
-max_amp_tr = 22.307652973859113 # lpc time domain
+# max_amp_tr = 22.307652973859113 # lpc time domain
 lpc_perceptual_weighting_coeff = 0.92
 empha_filter_coeff = -0.68
 

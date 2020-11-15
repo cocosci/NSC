@@ -33,6 +33,7 @@ def lsf2poly_after_quan(lpc_in_lsf, order):
     return all_lpc_coeff_poly.astype(np.float32)
 
 
+# @tf.function
 def lpc_analysis_get_residual(raw_data_one_batch, quan_lpc_coeff):
     how_many = raw_data_one_batch.shape[0]  # which is the batch size
     all_lpc_res_segments = np.zeros((how_many, 512))

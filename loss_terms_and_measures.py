@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow_probability as tfp
 import numpy as np
 import os
+import mdct
 from constants import *
 
 
@@ -60,6 +61,8 @@ def inverse_mu_law_mapping(input_x, mu=255):
 
 
 def entropy_to_bitrate(total_entropy, the_strides):
+    # print(code_len_val)
+
     bitrate = ((sample_rate / 1024.0) / (frame_length - overlap_each_side)) * code_len_val * total_entropy
     return bitrate
 
@@ -70,8 +73,35 @@ def bitrate_to_entropy(bitrate, the_strides):
     entropy *= (frame_length - overlap_each_side / float(frame_length))
     return entropy
 
+def mse_loss_v1(decoded_sig, original_sig, kai_re_mat=1):
+    mse = tf.reduce_mean(input_tensor=tf.square(tf.subtract(decoded_sig, original_sig)), axis=-1)
+    return tf.sqrt(mse + 1e-07)
+
+# @tf.function
+# def mdct_transform(sig):
+#     bar = 256
+#     for i in range(128):  # batch size
+#         mdct_spec_full = tf.signal.mdct(sig[i, :], frame_length=512)
+#         mask = np.ones((mdct_spec_full.shape[0], mdct_spec_full.shape[1]))
+#         mask[bar:, :] = 0
+#         mdct_spec_full = tf.multiply(mdct_spec_full, mask)
+#         sig[i, :] = tf.signal.inverse_mdct(mdct_spec_full)
+#     return sig
+
+def mdct_transform(sig):
+    bar = 128
+    mdct_spec_full = tf.signal.mdct(sig, frame_length=512)
+    # print(mdct_spec_full.shape)
+    mask = np.ones((128, 1, mdct_spec_full.shape[1]))
+    mask[:, :, bar:] = 0
+    mdct_spec_full = tf.multiply(mdct_spec_full, mask)
+    sig = tf.signal.inverse_mdct(mdct_spec_full)
+    print(sig.shape)
+    return sig
+
 
 def mse_loss(decoded_sig, original_sig, kai_re_mat=1):
+    decoded_sig, original_sig = mdct_transform(decoded_sig), mdct_transform(original_sig)
     mse = tf.reduce_mean(input_tensor=tf.square(tf.subtract(decoded_sig, original_sig)), axis=-1)
     return tf.sqrt(mse + 1e-07)
 
@@ -130,7 +160,7 @@ def mfcc_loss(decoded_sig, original_sig, is_finetuning=False):
 
     distances = []
     for i in range(0, len(pvec_true)):
-        error = tf.expand_dims(mse_loss(pvec_pred[i], pvec_true[i]), axis=-1)
+        error = tf.expand_dims(mse_loss_v1(pvec_pred[i], pvec_true[i]), axis=-1)
         distances.append(error)
     distances = tf.concat(distances, axis=-1)
     mfcc_loss = tf.reduce_mean(input_tensor=distances, axis=-1)
