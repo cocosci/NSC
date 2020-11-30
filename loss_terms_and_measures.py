@@ -62,7 +62,7 @@ def inverse_mu_law_mapping(input_x, mu=255):
 
 def entropy_to_bitrate(total_entropy, the_strides):
     # print(code_len_val)
-
+    code_len_val = 128 if the_strides == 4 else 256
     bitrate = ((sample_rate / 1024.0) / (frame_length - overlap_each_side)) * code_len_val * total_entropy
     return bitrate
 
@@ -72,6 +72,12 @@ def bitrate_to_entropy(bitrate, the_strides):
     entropy = (bitrate / PRE_ENTROPY_RATE * sample_rate)
     entropy *= (frame_length - overlap_each_side / float(frame_length))
     return entropy
+
+
+def mse_loss(decoded_sig, original_sig, kai_re_mat=1):
+    mse = tf.reduce_mean(input_tensor=tf.square(tf.subtract(decoded_sig, original_sig)), axis=-1)
+    return tf.sqrt(mse + 1e-07)
+
 
 def mse_loss_v1(decoded_sig, original_sig, kai_re_mat=1):
     mse = tf.reduce_mean(input_tensor=tf.square(tf.subtract(decoded_sig, original_sig)), axis=-1)
@@ -100,10 +106,10 @@ def mdct_transform(sig):
     return sig
 
 
-def mse_loss(decoded_sig, original_sig, kai_re_mat=1):
-    decoded_sig, original_sig = mdct_transform(decoded_sig), mdct_transform(original_sig)
-    mse = tf.reduce_mean(input_tensor=tf.square(tf.subtract(decoded_sig, original_sig)), axis=-1)
-    return tf.sqrt(mse + 1e-07)
+#def mse_loss(decoded_sig, original_sig, kai_re_mat=1):
+#    decoded_sig, original_sig = mdct_transform(decoded_sig), mdct_transform(original_sig)
+#    mse = tf.reduce_mean(input_tensor=tf.square(tf.subtract(decoded_sig, original_sig)), axis=-1)
+#    return tf.sqrt(mse + 1e-07)
 
 
 def tp_mse_loss(decoded_sig, original_sig, kai_re_mat=1):
@@ -125,6 +131,7 @@ def mfcc_transform(the_stft, the_spectrum, is_finetuning=False):    # Warp the l
     num_spectrogram_bins = the_stft.shape[-1]
     sample_rate, lower_edge_hertz, upper_edge_hertz = 16000, 0.0, 8000.0
     selected_ind = [8, 16, 32, 128]
+    # selected_ind = [128]
 
     MEL_FILTERBANKS = []
     for num_mel_bins in selected_ind:
@@ -248,8 +255,8 @@ def stft_loss(decoded_sig, original_sig):
 
 
 def quan_loss(softmax_assignment):
-    return tf.reduce_mean(input_tensor=(tf.reduce_sum(input_tensor=tf.sqrt(softmax_assignment + 1e-20), axis=-1) - 1.0),
-                          axis=-1)
+    # return tf.reduce_mean(input_tensor=(tf.reduce_sum(input_tensor=tf.sqrt(softmax_assignment + 1e-20), axis=-1) - 1.0), axis=-1)
+    return tf.reduce_mean(input_tensor=(tf.reduce_sum(input_tensor=tf.sqrt(softmax_assignment + 1e-20), axis=-1)), axis=-1)
 
 
 def entropy_coding_loss(soft_assignment):

@@ -7,6 +7,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constants.py" afterPath="$PROJECT_DIR$/constants.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loss_terms_and_measures.py" afterPath="$PROJECT_DIR$/loss_terms_and_measures.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lpc_utilities.py" afterPath="$PROJECT_DIR$/lpc_utilities.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/neural_speech_coding_module.py" afterPath="$PROJECT_DIR$/neural_speech_coding_module.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,23 +20,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="lpc_utilities.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="40" column="20" lean-forward="false" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cmrl.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="cmrl.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cmrl.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4606">
-              <caret line="795" column="25" lean-forward="false" selection-start-line="795" selection-start-column="25" selection-end-line="795" selection-end-column="25" />
+            <state relative-caret-position="1241">
+              <caret line="467" column="86" lean-forward="false" selection-start-line="467" selection-start-column="67" selection-end-line="467" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -44,9 +33,21 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+            <state relative-caret-position="286">
+              <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lpc_utilities.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="45" column="24" lean-forward="true" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,10 +55,22 @@
       <file leaf-file-name="neural_speech_coding_module.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1653">
-              <caret line="105" column="29" lean-forward="false" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+            <state relative-caret-position="277">
+              <caret line="921" column="90" lean-forward="false" selection-start-line="921" selection-start-column="82" selection-end-line="921" selection-end-column="90" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utilities.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utilities.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="6" column="51" lean-forward="false" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="51" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,8 +79,8 @@
       <file leaf-file-name="loss_terms_and_measures.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4731">
-              <caret line="254" column="23" lean-forward="false" selection-start-line="254" selection-start-column="4" selection-end-line="254" selection-end-column="23" />
+            <state relative-caret-position="180">
+              <caret line="261" column="23" lean-forward="false" selection-start-line="261" selection-start-column="4" selection-end-line="261" selection-end-column="23" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -75,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constants.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/constants.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state relative-caret-position="133">
+              <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -88,8 +101,8 @@
       <file leaf-file-name="nn_core_operator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2888">
-              <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
+            <state relative-caret-position="111">
+              <caret line="133" column="74" lean-forward="true" selection-start-line="133" selection-start-column="74" selection-end-line="133" selection-end-column="74" />
               <folding />
             </state>
           </provider>
@@ -99,36 +112,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>end2end_eval_lpc</find>
-      <find>def m</find>
-      <find>entropy_to_bitrate</find>
-      <find>code_len_val</find>
-      <find>code_len_val =</find>
-      <find>_bottle_neck_size</find>
-      <find>def on</find>
-      <find>cmrl_ev</find>
-      <find>data_frame_setup</find>
-      <find>_feedforward_lpc</find>
-      <find>computational_graph_end2end_quan_on_lpc</find>
-      <find>all_modules_feedforward_lpc</find>
       <find>cmrl_eval_lpc</find>
-      <find>def computational_graph_end2end_quan_on_lpc</find>
-      <find>def computational_graph_end2end_quan_on</find>
-      <find>tr_data</find>
-      <find>end2end_eval</find>
-      <find>def one</find>
-      <find>def com</find>
-      <find>_the_encoder_in_each_module</find>
-      <find>computational_graph_end2end_quan_on</find>
-      <find>model_training</find>
-      <find>_generate_one_epoch_end2end</find>
-      <find>one_ae</find>
-      <find>def _load_sig</find>
-      <find>mse_loss</find>
+      <find>computational_graph_end2end_quan_on_lpc</find>
+      <find>def mo</find>
+      <find>lpc_s</find>
+      <find>residu</find>
+      <find>lpc_lsp</find>
+      <find>lpc_analysis_get_residual</find>
+      <find>lsf2p</find>
+      <find>feed_lpc_coeff</find>
+      <find>one_</find>
+      <find>hann_process</find>
+      <find>_lpc_order</find>
+      <find>tr_lpc_coeff</find>
+      <find>lpc_</find>
+      <find>retra</find>
+      <find>_greedy_followers_lpc</find>
+      <find>def model_training_lpc</find>
+      <find>lpc_analysis_at_test</find>
+      <find>_gree</find>
+      <find>_greedy_fo</find>
+      <find>residual_coding_x =</find>
+      <find>finetunin</find>
+      <find>trainable</find>
+      <find>16</find>
+      <find>scalar_softmax_quantization</find>
+      <find>lpc_perceptual_weighting_coeff</find>
+      <find>highpass_filter</find>
+      <find>finet</find>
       <find>entropy_coding_loss</find>
-      <find>lpc_e</find>
-      <find>_tr_data</find>
-      <find>max_amp_tr</find>
+      <find>one_mo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -138,18 +151,18 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/lpc_utilities.py" />
         <option value="$PROJECT_DIR$/loss_terms_and_measures.py" />
+        <option value="$PROJECT_DIR$/lpc_utilities.py" />
+        <option value="$PROJECT_DIR$/constants.py" />
         <option value="$PROJECT_DIR$/neural_speech_coding_module.py" />
         <option value="$PROJECT_DIR$/cmrl.py" />
-        <option value="$PROJECT_DIR$/constants.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="829" />
+    <option name="height" value="782" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -281,12 +294,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="829" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="782" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17381974" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17811158" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -300,7 +314,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -308,10 +321,152 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/utilities.py</url>
+          <line>17</line>
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmrl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15105">
+          <caret line="795" column="25" lean-forward="false" selection-start-line="795" selection-start-column="25" selection-end-line="795" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8056">
+          <caret line="442" column="52" lean-forward="false" selection-start-line="442" selection-start-column="48" selection-end-line="442" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="40" column="45" lean-forward="false" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5035">
+          <caret line="270" column="0" lean-forward="false" selection-start-line="262" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2888">
+          <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmrl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15105">
+          <caret line="795" column="25" lean-forward="false" selection-start-line="795" selection-start-column="25" selection-end-line="795" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1653">
+          <caret line="105" column="29" lean-forward="false" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4731">
+          <caret line="254" column="23" lean-forward="false" selection-start-line="254" selection-start-column="4" selection-end-line="254" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2888">
+          <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -498,36 +653,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2888">
-          <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
+        <state relative-caret-position="286">
+          <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
+    <entry file="file://$PROJECT_DIR$/utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4731">
-          <caret line="254" column="23" lean-forward="false" selection-start-line="254" selection-start-column="4" selection-end-line="254" selection-end-column="23" />
+        <state relative-caret-position="114">
+          <caret line="6" column="51" lean-forward="false" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="51" />
           <folding>
-            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+        <state relative-caret-position="111">
+          <caret line="133" column="74" lean-forward="true" selection-start-line="133" selection-start-column="74" selection-end-line="133" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="40" column="20" lean-forward="false" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="20" />
+        <state relative-caret-position="245">
+          <caret line="45" column="24" lean-forward="true" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="261" column="23" lean-forward="false" selection-start-line="261" selection-start-column="4" selection-end-line="261" selection-end-column="23" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -536,8 +709,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1653">
-          <caret line="105" column="29" lean-forward="false" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+        <state relative-caret-position="277">
+          <caret line="921" column="90" lean-forward="false" selection-start-line="921" selection-start-column="82" selection-end-line="921" selection-end-column="90" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -546,16 +719,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cmrl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4606">
-          <caret line="795" column="25" lean-forward="false" selection-start-line="795" selection-start-column="25" selection-end-line="795" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        <state relative-caret-position="1241">
+          <caret line="467" column="86" lean-forward="false" selection-start-line="467" selection-start-column="67" selection-end-line="467" selection-end-column="86" />
           <folding />
         </state>
       </provider>

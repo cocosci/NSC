@@ -38,21 +38,21 @@ class neuralSpeechCodingModule(object):
         self._max_amp = max_amp_tr
 
 
-        tr_data = np.load(self._root_path + '/ac_stft_data/tr_time_journal.npy')[:int(self._tr_data_size), :]
+        # tr_data = np.load(self._root_path + '/ac_stft_data/tr_time_journal.npy')[:int(self._tr_data_size), :]
         # tr_data = np.load(self._root_path + '/ac_stft_data/tr_lpc_res_300000_512.npy')[:int(self._tr_data_size), :
                                                         # residuals_with_quantized_lpc_coeff_128bins_signal_processed_order_16_final_flat
-        self._tr_data = tr_data
-        print('tr_data', tr_data.shape)
+        # self._tr_data = tr_data
+        # print('tr_data', tr_data.shape)
 
         tr_lpc_res = np.load(self._root_path + 'cmrl_v2/residuals_with_quantized_lpc_coeff_256bins_signal_processed_order_16_final_flat.npy')[
                      :int(self._tr_data_size), :]
         tr_data = np.load(self._root_path + 'cmrl_v2/flat_raw_data.npy')[:int(self._tr_data_size), :]  # * self._lpc_res_scaler
         tr_lpc_coeff = np.load(self._root_path + 'cmrl_v2/end2end_lpc_coeff_in_lsf_16_signal_based_final_flat.npy')[:int(self._tr_data_size), :]
-        self._lpc_order = tr_lpc_coeff.shape[1]
+        self._lpc_order = 16 # tr_lpc_coeff.shape[1]
         self._is_cq = int(arg.is_cq)
 
-        # print('expanded tr_data: ', tr_data.shape, tr_lpc_coeff.shape)
-        # self._tr_data = np.concatenate([tr_data, tr_lpc_coeff, tr_lpc_res], 1)
+        print('expanded tr_data: ', tr_data.shape, tr_lpc_coeff.shape)
+        self._tr_data = np.concatenate([tr_data, tr_lpc_coeff, tr_lpc_res], 1)
 
         print(' tr_data: ', tr_data.shape)
         self._epoch_tanh = arg.epoch_tanh
@@ -111,7 +111,7 @@ class neuralSpeechCodingModule(object):
     def _generate_one_epoch_end2end_lpc(self, x, y, batchsize):
         the_list = list(range(0, x.shape[0] - self._batch_size, self._batch_size))
         random.shuffle(the_list)
-        for i in the_list:
+        for i in the_list[:]:
             ret = np.reshape(x[i:i + batchsize, :frame_length], (batchsize, frame_length, 1))
             ret_lpc_coeff = np.reshape(x[i:i + batchsize, frame_length:frame_length + self._lpc_order],
                                        (batchsize, self._lpc_order, 1))
@@ -286,7 +286,8 @@ class neuralSpeechCodingModule(object):
                                                 the_strides):  # downsampling strides, represented as a list
         with tf.compat.v1.variable_scope(the_scope):
             alpha = tf.Variable(init_alpha, dtype=tf.float32, name='alpha')
-            bins = tf.Variable(np.linspace(-1, 1, number_bins), dtype=tf.float32, name='bins')
+            # alpha = tf.constant(init_alpha, dtype=tf.float32, name='alpha')
+            bins = tf.Variable(np.linspace(-beta_boundary, beta_boundary, number_bins), dtype=tf.float32, name='bins')
             _, floating_code = self._the_encoder_in_each_module(encoded, the_strides, the_share)
             print('floating_code############', floating_code.shape)
 
@@ -296,6 +297,7 @@ class neuralSpeechCodingModule(object):
                                                                              is_quan_on,
                                                                              the_share,
                                                                              frame_length // (2**len(the_strides)),
+                                                                             # frame_length // the_strides,
                                                                              number_bins)
             _, expand_back = self._the_decoder_in_each_module(the_final_code, the_strides, the_share)
             print('model parameters:',
@@ -735,7 +737,9 @@ class neuralSpeechCodingModule(object):
                 [0.0] * (frame_length + (frame_length - overlap_each_side) * (segments_per_utterance.shape[0] - 1)))
 
             # code_segment_len = int(frame_length / self._the_strides[0])
-            code_segment_len = frame_length // (2 ** len(self._the_strides))
+            # code_segment_len = frame_length // (2 ** len(self._the_strides))
+            the_stride_ind = 1 if flag == 'the_follower' else 0
+            code_segment_len = 128 if self._the_strides[the_stride_ind] == 4 else 256
             # code_segment_len = 64
 
             _encoded_sig = np.array(
@@ -931,6 +935,7 @@ class neuralSpeechCodingModule(object):
 
 
             tau = tf.compat.v1.placeholder(dtype=tf.float32, shape=None, name='tau')
+            the_stride = [2, 2] if self._the_strides[0] == 4 else [2]
             _softmax_assignment, weight, decoded_fully, encoded, decoded, alpha, bins \
                 = self.computational_graph_end2end_quan_on_lpc(res_x * self._res_scalar,
                                                                quan_lpc_x_poly,
@@ -938,14 +943,14 @@ class neuralSpeechCodingModule(object):
                                                                is_quan_on,
                                                                self._num_bins_for_follower[0],
                                                                'scope_1',
-                                                               self._the_strides)
+                                                               the_stride)
 
             decoded = decoded / self._res_scalar  # decoded here is the estimated res
             synthesized = tf.compat.v1.py_func(lpc_synthesizer_tr, [quan_lpc_x_poly, decoded], [tf.float32])[0]
 
             # time_loss = mse_loss(synthesized, x_[:, :, 0])
-            time_loss = mse_loss_v1(decoded, res_x[:, :, 0])
-            # time_loss = mse_loss(decoded, res_x[:, :, 0])
+            # time_loss = mse_loss_v1(decoded, res_x[:, :, 0])
+            time_loss = mse_loss(decoded, res_x[:, :, 0])
             freq_loss = mfcc_loss(decoded, res_x[:, :, 0])
             quantization_loss = quan_loss(_softmax_assignment)
             ent_loss = entropy_coding_loss(_softmax_assignment)

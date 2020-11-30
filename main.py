@@ -36,7 +36,7 @@ if __name__ == "__main__":
     elif args.training_mode == '2':
         audio_coding_ae.model(training_mode='retrain_from_somewhere', arg=args)
     elif args.training_mode == '3':
-        audio_coding_ae.model(training_mode='one_ae', arg=args)
+        audio_coding_ae.model(training_mode='cascaded', arg=args)
     elif args.training_mode == '4':
         audio_coding_ae.model(training_mode='cascaded', arg=args)
     elif args.training_mode == '5':

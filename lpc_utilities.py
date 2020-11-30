@@ -37,27 +37,42 @@ def lsf2poly_after_quan(lpc_in_lsf, order):
 def lpc_analysis_get_residual(raw_data_one_batch, quan_lpc_coeff):
     how_many = raw_data_one_batch.shape[0]  # which is the batch size
     all_lpc_res_segments = np.zeros((how_many, 512))
+    subframe = int(frame_length / 4)
+    subsubframe = int(subframe / 2)
     for i in range(how_many):
         lpc_analysis = ZFilter(quan_lpc_coeff[i, :].tolist())
         # without sub-frame
         # all_lpc_res_segments[i, :] = np.array(list(lpc_analysis(raw_data_one_batch[i, :].flatten())))
         # with sub-frame
-        all_lpc_res_segments[i, :128] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, :128].flatten()))) * np.append(np.array([1] * 64),
-                                                                                   np.hanning(64 * 2)[(64):])
-        all_lpc_res_segments[i, 64: 192] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, 64: 192].flatten()))) * np.hanning(64 * 2)
-        all_lpc_res_segments[i, 128:256] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, 128:256].flatten()))) * np.hanning(64 * 2)
-        all_lpc_res_segments[i, 192:320] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, 192:320].flatten()))) * np.hanning(64 * 2)
-        all_lpc_res_segments[i, 256:384] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, 256:384].flatten()))) * np.hanning(64 * 2)
-        all_lpc_res_segments[i, 320:448] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, 320:448].flatten()))) * np.hanning(64 * 2)
-        all_lpc_res_segments[i, 384:512] += np.array(
-            list(lpc_analysis(raw_data_one_batch[i, 384:512].flatten()))) * np.append(np.hanning(64 * 2)[:(64)],
-                                                                                      np.array([1] * 64))
+        all_lpc_res_segments[i, :subframe] += np.array(
+            list(lpc_analysis(raw_data_one_batch[i, :subframe].flatten()))) * np.append(np.array([1] * subsubframe),
+                                                                                        np.hanning(subsubframe * 2)[
+                                                                                        (subsubframe):])
+        all_lpc_res_segments[i, subsubframe: (subsubframe + subframe)] += np.array(
+            list(lpc_analysis(raw_data_one_batch[i, subsubframe: (subsubframe + subframe)].flatten()))) * np.hanning(
+            subsubframe * 2)
+        all_lpc_res_segments[i, subsubframe * 2: (subsubframe * 2 + subframe)] += np.array(
+            list(lpc_analysis(
+                raw_data_one_batch[i, subsubframe * 2: (subsubframe * 2 + subframe)].flatten()))) * np.hanning(
+            subsubframe * 2)
+        # print(frame_length, subframe, all_lpc_res_segments[i, subsubframe*3: (subsubframe*3+subframe)].shape)
+        all_lpc_res_segments[i, subsubframe * 3: (subsubframe * 3 + subframe)] += np.array(
+            list(lpc_analysis(
+                raw_data_one_batch[i, subsubframe * 3: (subsubframe * 3 + subframe)].flatten()))) * np.hanning(
+            subsubframe * 2)
+        all_lpc_res_segments[i, subsubframe * 4: (subsubframe * 4 + subframe)] += np.array(
+            list(lpc_analysis(
+                raw_data_one_batch[i, subsubframe * 4: (subsubframe * 4 + subframe)].flatten()))) * np.hanning(
+            subsubframe * 2)
+        all_lpc_res_segments[i, subsubframe * 5: (subsubframe * 5 + subframe)] += np.array(
+            list(lpc_analysis(
+                raw_data_one_batch[i, subsubframe * 5: (subsubframe * 5 + subframe)].flatten()))) * np.hanning(
+            subsubframe * 2)
+        all_lpc_res_segments[i, subsubframe * 6: (subsubframe * 6 + subframe)] += np.array(
+            list(lpc_analysis(
+                raw_data_one_batch[i, subsubframe * 6: (subsubframe * 6 + subframe)].flatten()))) * np.append(
+            np.hanning(subsubframe * 2)[:(subsubframe)],
+            np.array([1] * subsubframe))
 
     return all_lpc_res_segments.astype(np.float32)
 
