@@ -96,6 +96,13 @@ class neuralSpeechCodingModule(object):
         Read one test file, normalize it, divided it by the max.
         """
         s, sr = librosa.load(the_wav_file, sr=None)  # saving redundantly many speech sources (easier to handle)
+
+
+        # resample
+        if sr != sample_rate:
+            print('resampled to', sample_rate)
+            s = librosa.resample(s, sr, sample_rate)
+
         the_scaler = np.std(s)  # * self._max_amp
         s /= the_scaler
         return s, the_scaler
@@ -303,7 +310,7 @@ class neuralSpeechCodingModule(object):
             print('model parameters:',
                   np.sum([np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()]))
             print('end2end output shape:', expand_back.shape)
-
+            # print('model parameters:', [np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()])
             #synthesized_batch = tf.compat.v1.py_func(lpc_synthesizer_tr,
             #                                         [quan_lpc_coeff, expand_back[:, :, 0] / self._res_scalar],
             #                                         [tf.float32])[0]
@@ -532,7 +539,7 @@ class neuralSpeechCodingModule(object):
             print('-----------------------')
 
             start = time.perf_counter()
-            if self._is_cq and (i % 20 == 0 and i != 0 or i == epoch - 3):
+            if self._is_cq and (i % 30 == 0 and i != 0 or i == epoch - 3):
             # if self._is_cq and (i % 3 == 0 and i != 0):
                 print('=============Recalculating the residuals...=============')
                 # time.sleep(10.0)
@@ -917,6 +924,7 @@ class neuralSpeechCodingModule(object):
                 alpha = tf.Variable(init_alpha, dtype=tf.float32, name='alpha', trainable=self._is_cq)
                 lpc_bins_len = len(lpc_coeff_lsf_bins)
                 lpc_bins = tf.Variable(lpc_coeff_lsf_bins, dtype=tf.float32, name='bins', trainable=self._is_cq)
+
                 soft_assignment_lpc, quan_lpc_coeff = scalar_softmax_quantization(lpc_x,
                                                                                   alpha,
                                                                                   lpc_bins,

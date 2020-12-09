@@ -6,7 +6,7 @@ init_alpha = -500
 # init_alpha = -150
 # beta_boundary = 1
 beta_boundary = 1
-sample_rate = 16000
+sample_rate = 16000  # 12800
 
 
 is_pure_time_domain = False

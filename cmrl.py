@@ -167,14 +167,14 @@ class CMRL(neuralSpeechCodingModule):
 
             _softmax_assignment_1, weight, decoded_fully, encoded, residual_coding_x[0], alpha, bins = \
                 self.computational_graph_end2end_quan_on_lpc(
-                    res_x,
+                    res_x * self._res_scalar,
                     quan_lpc_x_poly,
                     the_share,
                     is_quan_on,
                     self._num_bins_for_follower[0],
                     'scope_1',
                     the_stride)
-            # residual_coding_x[0] = residual_coding_x[0]
+            residual_coding_x[0] = residual_coding_x[0] / self._res_scalar
             all_var_list += tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES,
                                                         scope='scope_1')
             all_var_list += tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.GLOBAL_VARIABLES, scope='lpc_quan')
@@ -286,7 +286,8 @@ class CMRL(neuralSpeechCodingModule):
                                         epoch=self._epoch_greedy_followers[-2],
                                         flag='the_follower', interested_var=interested_var,
                                         save_id='follower_' + str(num_res) + self._suffix,
-                                        the_tau_val=-0.25)
+                                        the_tau_val= self._coeff_term[3])
+                                        # the_tau_val= -0.25)
                                         # the_tau_val=self._coeff_term[3])
 
     def _finetuning(self, num_res):
@@ -690,7 +691,7 @@ class CMRL(neuralSpeechCodingModule):
                 'Test Utterance %1d: SNR: %7.5f dB  PESQ-WB: %6.5f   Entropy: %6.5f \n' % (
                 i, snr_list[i], the_pesqs[i], np.mean(all_entropy)))
             sf.write('./end2end_performance/' + str(self._base_model_id) +
-                     '/' + self._sep_test[i].split('/')[-1][:-4] + '.wav', _synthesized_sig, 16000, 'PCM_16')
+                     '/' + self._sep_test[i].split('/')[-1][:-4] + '.wav', _synthesized_sig, sample_rate, 'PCM_16')
             if VERBOSE:
                 np.save('./end2end_performance/' + str(self._base_model_id) + '/' +
                         self._sep_test[i].split('/')[-1][:-4] + '_ori.npy', per_sig[256:])
@@ -705,6 +706,8 @@ class CMRL(neuralSpeechCodingModule):
         stoi_return_it = np.sum(min_len * the_stoi / np.sum(min_len))
         pesq_return_it = np.sum(min_len * the_pesqs / np.sum(min_len))
         linearity_return_it = np.sum(min_len * the_linearitys / np.sum(min_len))
+        print('Average SNR: %7.5f dB ' % (np.sum(min_len * snr_list / np.sum(min_len))))
+        print('Average PESQ: %7.5f ' % (np.sum(min_len * the_pesqs / np.sum(min_len))))
         np.save('./end2end_performance/min_len_' + self._base_model_id + '.npy', min_len)
         np.save('./end2end_performance/snr_' + self._base_model_id + '.npy', snr_list)
         np.save('./end2end_performance/pesq_' + self._base_model_id + '.npy', the_pesqs)
@@ -741,30 +744,45 @@ class CMRL(neuralSpeechCodingModule):
         tau = tf.compat.v1.placeholder(dtype=tf.float32, shape=None, name='tau')
 
         residual_coding_x = [None] * self._num_resnets
-        _softmax_assignment_2, encoded_2, bins_2, soft_assignment_fully_2 = 0,0,0,0
+        _softmax_assignment = [None] * self._num_resnets
+        # _softmax_assignment_2, encoded_2, bins_2, soft_assignment_fully_2 = 0,0,0,0
+
 
         for i in range(self._num_resnets):
+            the_stride = [2, 2] if self._the_strides[i] == 4 else [2]
             if i == 0:
-                _softmax_assignment, weight, decoded_fully, encoded, residual_coding_x[i], alpha, bins \
+                _softmax_assignment[i], weight, decoded_fully, encoded, residual_coding_x[i], alpha, bins \
                     = self.computational_graph_end2end_quan_on_lpc(
                     res_x * self._res_scalar,
                     quan_lpc_x_poly,
                     the_share,
                     is_quan_on,
-                    self._num_bins_for_follower[0],
-                    'scope_1',
-                    self._the_strides)
-                residual_coding_x[0] = residual_coding_x[0]/self._res_scalar
-                # residual_coding_x[0] = inverse_mu_law_mapping(residual_coding_x[0] / self._res_scalar)
+                    self._num_bins_for_follower[i],
+                    'scope_'+str(i + 1),
+                    the_stride)
+                residual_coding_x[i] = residual_coding_x[i]/self._res_scalar
             else:
-                pass
+                _softmax_assignment[i], weight, decoded_fully, encoded, residual_coding_x[i], alpha, bins \
+                    = self.computational_graph_end2end_quan_on_lpc(
+                    self._res_scalar * (res_x - tf.expand_dims(tf.reduce_sum(input_tensor=
+                                                                         residual_coding_x[:i], axis=0), axis=2)),
+                    quan_lpc_x_poly,
+                    the_share,
+                    is_quan_on,
+                    self._num_bins_for_follower[i],
+                    'scope_' + str(i + 1),
+                    the_stride)
+                residual_coding_x[i] = residual_coding_x[i] / self._res_scalar
+                # residual_coding_x[0] = inverse_mu_law_mapping(residual_coding_x[0] / self._res_scalar)
+            #else:
+            #    pass
         if self._num_resnets == 1:
             _softmax_assignment_2, encoded_2, bins_2, soft_assignment_fully_2 = _softmax_assignment, encoded, bins, _softmax_assignment
-        return x, x_, lr, lpc_x, res_x, quan_lpc_x_poly, tau, the_share, is_quan_on, soft_assignment_lpc, _softmax_assignment_2, encoded, encoded_2, _softmax_assignment, soft_assignment_fully_2, residual_coding_x, alpha, lpc_bins, bins, bins_2
+        return x, x_, lr, lpc_x, res_x, quan_lpc_x_poly, tau, the_share, is_quan_on, soft_assignment_lpc, _softmax_assignment, encoded, encoded, _softmax_assignment, _softmax_assignment, residual_coding_x, alpha, lpc_bins, bins, bins
 
     def _feedforward_lpc(self, num_res):
         with tf.Graph().as_default():
-            x, x_, lr, lpc_x, res_x, quan_lpc_x_poly, tau, the_share, is_quan_on, _soft_assignment_lpc, _, encoded_1, encoded_2, _soft_assignment_fully_1, _soft_assignment_fully_2, residual_coding_x, alpha, lpc_bins, bins_1, bins_2 = self.all_modules_feedforward_lpc(num_res)
+            x, x_, lr, lpc_x, res_x, quan_lpc_x_poly, tau, the_share, is_quan_on, _soft_assignment_lpc, _, encoded_1, encoded_2, _soft_assignment_, _soft_assignment_fully_2, residual_coding_x, alpha, lpc_bins, bins_1, bins_2 = self.all_modules_feedforward_lpc(num_res)
             decoded = np.sum(residual_coding_x, axis=0)
 
             synthesized = tf.compat.v1.py_func(lpc_synthesizer_tr, [quan_lpc_x_poly, decoded], [tf.float32])[0]
@@ -775,11 +793,14 @@ class CMRL(neuralSpeechCodingModule):
             time_loss = mse_loss(decoded, res_x[:, :, 0])
             freq_loss = mfcc_loss(decoded, res_x[:, :, 0])
             ent_loss_lpc = entropy_coding_loss(_soft_assignment_lpc)
-            ent_loss_1 = entropy_coding_loss(_soft_assignment_fully_1)
-            ent_loss_2 = entropy_coding_loss(_soft_assignment_fully_2)
-            ent_loss = ent_loss_1  # + ent_loss_2
+            ent_loss_1 = entropy_coding_loss(_soft_assignment_[0])
+            ent_loss = ent_loss_1
+            if num_res == 2:
+                ent_loss_2 = entropy_coding_loss(_soft_assignment_[1])
+                ent_loss += ent_loss_2
             # quan_loss = tf.reduce_mean((tf.reduce_sum(tf.sqrt(_softmax_assignment + 1e-20), axis = -1) - 1.0), axis = -1)
             interested_var = [time_loss, freq_loss, ent_loss_1, ent_loss_lpc, ent_loss]
+
             saver = tf.compat.v1.train.Saver()
             with tf.compat.v1.Session() as sess:
                 if self._num_resnets == 1:
@@ -846,7 +867,7 @@ class CMRL(neuralSpeechCodingModule):
             for i in range(1, self._num_resnets):
                 self._greedy_followers_lpc(i)
             # self._finetuning(self._num_resnets)
-            self._finetuning_lpc(self._num_resnets)
+            # self._finetuning_lpc(self._num_resnets)
         elif training_mode == 'finetune':
             self._rand_model_id = arg.base_model_id
             self._finetuning(self._num_resnets)
