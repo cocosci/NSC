@@ -404,13 +404,16 @@ class CMRL(neuralSpeechCodingModule):
             tau = tf.compat.v1.placeholder(dtype=tf.float32, shape=None, name='tau')
             residual_coding_x = [None] * (num_res)
             soft_assignment_mat = [None] * (num_res)
+
+
             for i in range(0, num_res):
                 the_stride = [2, 2] if self._the_strides[i] == 4 else [2]
-                print(the_stride)
+
+                cmrl_input = self._res_scalar * res_x if i == 0 else self._res_scalar * (res_x - tf.expand_dims(
+                    tf.reduce_sum(input_tensor=residual_coding_x[:i], axis=0), axis=2))
                 soft_assignment_mat[i], weight, decoded_fully, encoded, residual_coding_x[i], alpha, bins = \
                     self.computational_graph_end2end_quan_on_lpc(
-                        (res_x - tf.expand_dims(tf.reduce_sum(input_tensor=residual_coding_x[:i], axis=0), axis=2))
-                        * self._res_scalar,
+                        cmrl_input,
                         quan_lpc_x_poly,
                         the_share,
                         is_quan_on,
@@ -457,11 +460,14 @@ class CMRL(neuralSpeechCodingModule):
                            (summed_feature_len[1] / np.sum(summed_feature_len)) * entropy_coding_loss(soft_assignment_mat[0]) + \
                            (summed_feature_len[2] / np.sum(summed_feature_len)) * entropy_coding_loss(soft_assignment_mat[1])
 
+                ent_loss_list = [entropy_coding_loss(soft_assignment_lpc),
+                                 entropy_coding_loss(soft_assignment_mat[0]),
+                                 entropy_coding_loss(soft_assignment_mat[1])]
+
                 loss_no_quan = self._coeff_term[0] * time_loss + self._coeff_term[1] * freq_loss
                 loss_quan_init = self._coeff_term[0] * time_loss + \
                                  self._coeff_term[1] * freq_loss + \
-                                 self._coeff_term[2] * quantization_loss + \
-                                 tau * ent_loss  # self._coeff_term[3] * ent_loss  #
+                                 self._coeff_term[2] * quantization_loss # + \tau * ent_loss  # self._coeff_term[3] * ent_loss  #
 
                 trainop2_no_quan = tf.compat.v1.train.AdamOptimizer(lr, beta1=0.9, beta2=0.999). \
                     minimize(loss_no_quan, var_list=tf.compat.v1.trainable_variables())
@@ -469,7 +475,7 @@ class CMRL(neuralSpeechCodingModule):
                     minimize(loss_quan_init, var_list=tf.compat.v1.trainable_variables())
                 trainop2_list = [trainop2_no_quan, trainop2_quan_init]
                 interested_var = [time_loss, freq_loss, quantization_loss, lpc_bins, soft_assignment_mat, ent_loss,
-                                  ent_loss, encoded]
+                                  ent_loss_list, encoded]
                 adam_vars = [var for var in tf.compat.v1.global_variables() if
                              'Adam' in var.name or 'beta1_power' in var.name or 'beta2_power' in var.name]
                 sess.run(tf.compat.v1.variables_initializer(adam_vars))
@@ -483,7 +489,8 @@ class CMRL(neuralSpeechCodingModule):
                                         decoded=decoded,
                                         alpha=alpha,
                                         bins=bins, saver=saver,
-                                        the_learning_rate=self._learning_rate_tanh, epoch=self._epoch_tanh,
+                                        the_learning_rate=self._learning_rate_greedy_followers[-1],
+                                        epoch=self._epoch_greedy_followers[-1],
                                         flag='finetune', interested_var=interested_var,
                                         save_id='finetune_' + str(num_res) + self._suffix,
                                         the_tau_val=self._coeff_term[3])
@@ -870,7 +877,8 @@ class CMRL(neuralSpeechCodingModule):
             # self._finetuning_lpc(self._num_resnets)
         elif training_mode == 'finetune':
             self._rand_model_id = arg.base_model_id
-            self._finetuning(self._num_resnets)
+            # self._finetuning(self._num_resnets)
+            self._finetuning_lpc(self._num_resnets)
         elif training_mode == 'feedforward':
             model_id = arg.base_model_id
             self._rand_model_id = model_id

@@ -726,7 +726,7 @@ class neuralSpeechCodingModule(object):
         # selected_test_set = np.random.choice(1500, how_many, replace=False)
         for i in range(how_many):
             per_sig, the_std = self._load_sig_lpc(self._sep_val[i])
-            print(np.max(per_sig), 'max')
+            # print(np.max(per_sig), 'max')
             # high pass and pre-emphasis on signals
             per_sig_highpass_empha_filtered = np.array(list(empha_filter(highpass_filter(per_sig))))
             segments_per_utterance = utterance_to_segment(per_sig_highpass_empha_filtered, True)
@@ -754,11 +754,12 @@ class neuralSpeechCodingModule(object):
                 np.float32)
             _quan_loss_arr_each = np.array([0.0] * segments_per_utterance.shape[0])
             all_entropy_fully = np.array([0.0] * segments_per_utterance.shape[0])
+            each_entropy = np.array([])
 
             # just LPC , no high pass and pre-emphasis.
             segments_per_utterance_coeff = lpc_analysis_at_test(segments_per_utterance, self._lpc_order)
             segments_per_utterance = utterance_to_segment(per_sig_highpass_empha_filtered[256:], True)
-
+            print(segments_per_utterance.shape)
             for j in range(segments_per_utterance.shape[0] - 2):
                 feed_x = np.reshape(segments_per_utterance[j], (1, frame_length, 1))
                 feed_lpc_coeff = np.reshape(segments_per_utterance_coeff[j], (1, self._lpc_order, 1))
@@ -785,11 +786,25 @@ class neuralSpeechCodingModule(object):
                 np.save('lpc_coeff_lsf_bins_updated_' + self._rand_model_id + '.npy', _interested_var[3])
                 _encoded_sig[j * (code_segment_len): j * (code_segment_len) + code_segment_len] += _encoded  # [0,:]
                 _quan_loss_arr_each[j] = _interested_var[2]
+                #
+
+                ent_list = np.array([16.0, 256]) if len(np.array(_interested_var[6])) == 2 else np.array([16.0, 256, 256])
+                # print(_interested_var[6], np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
+                # each_entropy.append(np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
+                # each_entropy.append(np.array(_interested_var[6]))
+                if len(_interested_var[6]) == 3:
+                    each_entropy = np.append(each_entropy, np.array(_interested_var[6]))
+
                 if isinstance(_interested_var[5], np.ndarray):
                     all_entropy_fully[j] = np.mean(_interested_var[5])
                 else:
                     all_entropy_fully[j] = _interested_var[5]
-
+            each_entropy = np.reshape(each_entropy, (-1, 3))
+            average_entropy_each_mod = np.mean(each_entropy, axis=0)
+            print(average_entropy_each_mod)
+            self._write_to_file_and_update_to_display(str(average_entropy_each_mod) + ', ')
+            each_entropy = np.mean(np.sum(ent_list / np.sum(ent_list) * np.mean(each_entropy, axis=0)))
+            # print(each_entropy)
             # print(np.max(_res_x_sig), 'max')
             per_sig *= the_std
 
@@ -797,13 +812,14 @@ class neuralSpeechCodingModule(object):
 
             _synthesized_sig *= the_std
 
-            fully_the_entropy[i] = np.mean(all_entropy_fully)
+            fully_the_entropy[i] = each_entropy  # np.mean(all_entropy_fully)
 
             # min_len[i], snr_list[i], the_stoi[i], the_pesqs[i], the_linearitys[i] = self.end2end_final_eval(per_sig, _synthesized_sig)
             min_len[i], _, snr_list[i], the_stoi[i], the_pesqs[i], the_linearitys[i] = \
                 eval_metrics(per_sig[256:], _synthesized_sig, self._rand_model_id)
             _quan_loss_arr[i] = np.mean(_quan_loss_arr_each)
-            print(snr(_res_x_sig, _decoded_sig)[1], snr_list[i], the_stoi[i], the_pesqs[i])
+            print(snr(_res_x_sig, _decoded_sig)[1], snr_list[i])
+            self._write_to_file_and_update_to_display(str(snr(_res_x_sig, _decoded_sig)[1]) + ',' + str(snr_list[i]) + ', ' )
 
         sdr_return_it = np.sum(min_len * snr_list / np.sum(min_len))
         stoi_return_it = np.sum(min_len * the_stoi / np.sum(min_len))

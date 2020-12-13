@@ -4,7 +4,7 @@
     <list default="true" id="69dd7bb4-2846-4214-b7b3-45ada8072a26" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmrl.py" afterPath="$PROJECT_DIR$/cmrl.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constants.py" afterPath="$PROJECT_DIR$/constants.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loss_terms_and_measures.py" afterPath="$PROJECT_DIR$/loss_terms_and_measures.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/neural_speech_coding_module.py" afterPath="$PROJECT_DIR$/neural_speech_coding_module.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,11 +17,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="cmrl.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="cmrl.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cmrl.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13471">
-              <caret line="709" column="66" lean-forward="false" selection-start-line="709" selection-start-column="57" selection-end-line="709" selection-end-column="66" />
+            <state relative-caret-position="317">
+              <caret line="456" column="72" lean-forward="false" selection-start-line="456" selection-start-column="60" selection-end-line="456" selection-end-column="72" />
               <folding />
             </state>
           </provider>
@@ -30,7 +30,7 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
+            <state relative-caret-position="226">
               <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
               <folding />
             </state>
@@ -40,8 +40,8 @@
       <file leaf-file-name="lpc_utilities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="760">
-              <caret line="45" column="24" lean-forward="false" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
+            <state relative-caret-position="437">
+              <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -49,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="neural_speech_coding_module.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="neural_speech_coding_module.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="152" column="31" lean-forward="false" selection-start-line="152" selection-start-column="8" selection-end-line="152" selection-end-column="31" />
+            <state relative-caret-position="-326">
+              <caret line="806" column="14" lean-forward="false" selection-start-line="806" selection-start-column="14" selection-end-line="806" selection-end-column="14" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -76,8 +76,8 @@
       <file leaf-file-name="loss_terms_and_measures.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="59">
-              <caret line="243" column="55" lean-forward="true" selection-start-line="243" selection-start-column="55" selection-end-line="243" selection-end-column="55" />
+            <state relative-caret-position="280">
+              <caret line="132" column="4" lean-forward="false" selection-start-line="132" selection-start-column="4" selection-end-line="132" selection-end-column="4" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -99,7 +99,7 @@
         <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="186">
-              <caret line="81" column="74" lean-forward="true" selection-start-line="81" selection-start-column="74" selection-end-line="81" selection-end-column="74" />
+              <caret line="81" column="74" lean-forward="false" selection-start-line="81" selection-start-column="74" selection-end-line="81" selection-end-column="74" />
               <folding />
             </state>
           </provider>
@@ -109,20 +109,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_greedy_followers_lpc</find>
-      <find>entropy_coding_loss</find>
-      <find>_feedforward_lpc</find>
-      <find>cmrl_eval_lpc</find>
-      <find>interested_var</find>
-      <find>feedforward_l</find>
-      <find>lpc_perceptual_weighting_coeff</find>
-      <find>lpc_analysis_at_test</find>
-      <find>bitr</find>
-      <find>all_modules_feedforward_lpc</find>
-      <find>_generate_one_epoch_end2end_lpc_fast</find>
       <find>_update_lpc_residual</find>
       <find>number_bins</find>
-      <find>model_training_lpc</find>
       <find>computational_graph_end2end_quan_on_lpc</find>
       <find>trainable=</find>
       <find>computation</find>
@@ -136,9 +124,21 @@
       <find>_the_encoder_in_each_module</find>
       <find>_stack_bottleneck_blocks</find>
       <find>def _stack_bottleneck_blocks</find>
-      <find>gated_bottleneck</find>
       <find>upsam</find>
+      <find>_finetuning</find>
+      <find>_finetuning_lpc</find>
       <find>_up_sampling_mod_helper</find>
+      <find>gated_bottleneck</find>
+      <find>[array([3.0132208], dtype=float32), array([3.0266428], dtype=float32), array([2.994423], dtype=float32), array([2.8379953], dtype=float32), array([3.6416948], dtype=float32), array([3.5219395], dtype=float32), array([3.6206524], dtype=float32), array([3.761603], dtype=float32), array([3.829724], dtype=float32), array([3.374932], dtype=float32), array([3.0166836], dtype=float32), array([3.1056206], dtype=float32), array([2.9338582], dtype=float32), array([2.985438], dtype=float32), array([2.9489357], dtype=float32), array([3.6546736], dtype=float32), array([3.7244155], dtype=float32), array([3.6497326], dtype=float32), array([3.69922], dtype=float32), array([3.8137944], dtype=float32), array([3.6901848], dtype=float32), array([3.6052892], dtype=float32), array([3.9148266], dtype=float32), array([4.107977], dtype=float32), array([4.0568376], dtype=float32), array([3.957369], dtype=float32), array([3.9072468], dtype=float32), array([3.789695], dtype=float32), array([3.7554214], dtype=float32), array([3.47214], dtype=float32), array([3.6610243], dtype=float32), array([3.7975261], dtype=float32), array([3.732734], dtype=float32), array([3.9426355], dtype=float32), array([3.9406023], dtype=float32), array([3.9850044], dtype=float32), array([3.6441154], dtype=float32), array([3.3036366], dtype=float32), array([3.3763673], dtype=float32), array([3.4838407], dtype=float32), array([3.6766746], dtype=float32), array([3.5418482], dtype=float32), array([3.5275724], dtype=float32), array([2.9976482], dtype=float32), array([2.956193], dtype=float32), array([2.4503868], dtype=float32), array([3.6129649], dtype=float32), array([3.5605452], dtype=float32), array([3.6881912], dtype=float32), array([3.548606], dtype=float32), array([2.9783087], dtype=float32), array([2.8004494], dtype=float32), array([3.8466616], dtype=float32), array([4.0369263], dtype=float32), array([3.850209], dtype=float32), array([3.5564153], dtype=float32), array([3.2671587], dtype=float32), array([3.348278], dtype=float32), array([3.433831], dtype=float32), array([3.5252683], dtype=float32), array([3.2031095], dtype=float32), array([2.9041512], dtype=float32), array([2.950979], dtype=float32), array([2.7815602], dtype=float32), array([3.7849095], dtype=float32), array([3.7376149], dtype=float32), array([3.7353008], dtype=float32), array([3.6740093], dtype=float32), array([3.5032156], dtype=float32), array([3.527746], dtype=float32), array([3.3889284], dtype=float32), array([3.4713771], dtype=float32), array([3.4457655], dtype=float32), array([3.4300592], dtype=float32), array([3.300557], dtype=float32), array([3.3002155], dtype=float32), array([3.4045646], dtype=float32), array([3.3584385], dtype=float32), array([3.3161774], dtype=float32), array([3.3614378], dtype=float32), array([3.2065408], dtype=float32), array([3.1776536], dtype=float32), array([3.160011], dtype=float32), array([3.2046745], dtype=float32), array([3.280759], dtype=float32), array([3.2682478], dtype=float32), array([3.168068], dtype=float32), array([3.0069678], dtype=float32), array([3.05869], dtype=float32), array([3.0755827], dtype=float32), array([2.9295464], dtype=float32)]</find>
+      <find>model_training_lpc</find>
+      <find>_generate_one_epoch_end2end_lpc_fast</find>
+      <find>eval_l</find>
+      <find>end2end_eval_lpc</find>
+      <find>eval_lp</find>
+      <find>fast</find>
+      <find>write</find>
+      <find>finetunin</find>
+      <find>_write_to_file_and_update_to_display</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -148,9 +148,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/loss_terms_and_measures.py" />
         <option value="$PROJECT_DIR$/lpc_utilities.py" />
         <option value="$PROJECT_DIR$/constants.py" />
+        <option value="$PROJECT_DIR$/loss_terms_and_measures.py" />
         <option value="$PROJECT_DIR$/cmrl.py" />
         <option value="$PROJECT_DIR$/neural_speech_coding_module.py" />
       </list>
@@ -295,7 +295,7 @@
     <frame x="2385" y="221" width="2051" height="727" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.06769537" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17122947" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -745,32 +745,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="45" column="24" lean-forward="false" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cmrl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13471">
-          <caret line="709" column="66" lean-forward="false" selection-start-line="709" selection-start-column="57" selection-end-line="709" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/constants.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -779,31 +753,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="81" column="74" lean-forward="false" selection-start-line="81" selection-start-column="74" selection-end-line="81" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="59">
-          <caret line="243" column="55" lean-forward="true" selection-start-line="243" selection-start-column="55" selection-end-line="243" selection-end-column="55" />
+        <state relative-caret-position="280">
+          <caret line="132" column="4" lean-forward="false" selection-start-line="132" selection-start-column="4" selection-end-line="132" selection-end-column="4" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
+    <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="81" column="74" lean-forward="true" selection-start-line="81" selection-start-column="74" selection-end-line="81" selection-end-column="74" />
-          <folding />
+        <state relative-caret-position="437">
+          <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="152" column="31" lean-forward="false" selection-start-line="152" selection-start-column="8" selection-end-line="152" selection-end-column="31" />
+        <state relative-caret-position="-326">
+          <caret line="806" column="14" lean-forward="false" selection-start-line="806" selection-start-column="14" selection-end-line="806" selection-end-column="14" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmrl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="456" column="72" lean-forward="false" selection-start-line="456" selection-start-column="60" selection-end-line="456" selection-end-column="72" />
+          <folding />
         </state>
       </provider>
     </entry>

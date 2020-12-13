@@ -131,6 +131,7 @@ def mfcc_transform(the_stft, the_spectrum, is_finetuning=False):    # Warp the l
     num_spectrogram_bins = the_stft.shape[-1]
     sample_rate, lower_edge_hertz, upper_edge_hertz = 16000, 0.0, 8000.0
     selected_ind = [8, 16, 32, 128]
+    # selected_ind = [8, 16, 32]
     # selected_ind = [128]
 
     MEL_FILTERBANKS = []
