@@ -37,22 +37,20 @@ class neuralSpeechCodingModule(object):
         self._tr_data_size = training_data_size
         self._max_amp = max_amp_tr
 
+        if is_pure_time_domain:
+            tr_data = np.load(self._root_path + '/ac_stft_data/tr_time_journal.npy')[:int(self._tr_data_size), :]
+            self._tr_data = tr_data
+            print('tr_data', tr_data.shape)
+        else:
+            tr_lpc_res = np.load(self._root_path + 'cmrl_v2/residuals_with_quantized_lpc_coeff_256bins_signal_processed_order_16_final_flat.npy')[
+                         :int(self._tr_data_size), :]
+            tr_data = np.load(self._root_path + 'cmrl_v2/flat_raw_data.npy')[:int(self._tr_data_size), :]  # * self._lpc_res_scaler
+            tr_lpc_coeff = np.load(self._root_path + 'cmrl_v2/end2end_lpc_coeff_in_lsf_16_signal_based_final_flat.npy')[:int(self._tr_data_size), :]
+            self._lpc_order = 16 # tr_lpc_coeff.shape[1]
+            self._is_cq = int(arg.is_cq)
 
-        # tr_data = np.load(self._root_path + '/ac_stft_data/tr_time_journal.npy')[:int(self._tr_data_size), :]
-        # tr_data = np.load(self._root_path + '/ac_stft_data/tr_lpc_res_300000_512.npy')[:int(self._tr_data_size), :
-                                                        # residuals_with_quantized_lpc_coeff_128bins_signal_processed_order_16_final_flat
-        # self._tr_data = tr_data
-        # print('tr_data', tr_data.shape)
-
-        tr_lpc_res = np.load(self._root_path + 'cmrl_v2/residuals_with_quantized_lpc_coeff_256bins_signal_processed_order_16_final_flat.npy')[
-                     :int(self._tr_data_size), :]
-        tr_data = np.load(self._root_path + 'cmrl_v2/flat_raw_data.npy')[:int(self._tr_data_size), :]  # * self._lpc_res_scaler
-        tr_lpc_coeff = np.load(self._root_path + 'cmrl_v2/end2end_lpc_coeff_in_lsf_16_signal_based_final_flat.npy')[:int(self._tr_data_size), :]
-        self._lpc_order = 16 # tr_lpc_coeff.shape[1]
-        self._is_cq = int(arg.is_cq)
-
-        print('expanded tr_data: ', tr_data.shape, tr_lpc_coeff.shape)
-        self._tr_data = np.concatenate([tr_data, tr_lpc_coeff, tr_lpc_res], 1)
+            print('expanded tr_data: ', tr_data.shape, tr_lpc_coeff.shape)
+            self._tr_data = np.concatenate([tr_data, tr_lpc_coeff, tr_lpc_res], 1)
 
         print(' tr_data: ', tr_data.shape)
         self._epoch_tanh = arg.epoch_tanh
@@ -239,7 +237,11 @@ class neuralSpeechCodingModule(object):
         The definition of neural decoder.
         """
         compressed_bit = the_code
-        compressed_bit = activation_func(compressed_bit)
+        # compressed_bit = change_channel(compressed_bit, the_channel=self._bottleneck_kernel_and_dilation[2],
+        #                                 # kernel_size=self._bottleneck_kernel_and_dilation[0],  #55,  # self._bottleneck_kernel_and_dilation[0],
+        #                                 kernel_size=55, # self._bottleneck_kernel_and_dilation[0],
+        #                                 activation=None)
+        # compressed_bit = activation_func(compressed_bit)
         for i in the_stride:
             compressed_bit = self._stack_bottleneck_blocks(compressed_bit, is_post_up_samling=False, the_share=the_share, is_enc=False)
             pre_up_sampling_hidden = compressed_bit
@@ -266,6 +268,7 @@ class neuralSpeechCodingModule(object):
             hidden_1, floating_code = self._the_encoder_in_each_module(encoded, the_strides, the_share)
             print('floating_code', floating_code.shape)
             # floating_code = differential_coding_subtract(floating_code)
+            # floating_code = mu_law_mapping(floating_code, mu=conv_mu)
             soft_assignment_3d, the_final_code = scalar_softmax_quantization(floating_code,
                                                                              alpha,
                                                                              bins,
@@ -273,6 +276,7 @@ class neuralSpeechCodingModule(object):
                                                                              the_share,
                                                                              frame_length // (2**len(the_strides)),
                                                                              number_bins)
+            # the_final_code = inverse_mu_law_mapping(the_final_code, mu=conv_mu)
             hidden_2, expand_back = self._the_decoder_in_each_module(the_final_code, the_strides, the_share)
             print('model parameters:',
                   np.sum([np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()]))
@@ -298,6 +302,7 @@ class neuralSpeechCodingModule(object):
             _, floating_code = self._the_encoder_in_each_module(encoded, the_strides, the_share)
             print('floating_code############', floating_code.shape)
 
+            floating_code = mu_law_mapping(floating_code, mu=conv_mu)
             soft_assignment_3d, the_final_code = scalar_softmax_quantization(floating_code,
                                                                              alpha,
                                                                              bins,
@@ -306,11 +311,14 @@ class neuralSpeechCodingModule(object):
                                                                              frame_length // (2**len(the_strides)),
                                                                              # frame_length // the_strides,
                                                                              number_bins)
+            the_final_code = inverse_mu_law_mapping(the_final_code, mu=conv_mu)
+            
             _, expand_back = self._the_decoder_in_each_module(the_final_code, the_strides, the_share)
             print('model parameters:',
                   np.sum([np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()]))
             print('end2end output shape:', expand_back.shape)
             # print('model parameters:', [np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()])
+            print('model parameters:', [v.get_shape() for v in tf.compat.v1.trainable_variables()])
             #synthesized_batch = tf.compat.v1.py_func(lpc_synthesizer_tr,
             #                                         [quan_lpc_coeff, expand_back[:, :, 0] / self._res_scalar],
             #                                         [tf.float32])[0]
@@ -623,7 +631,7 @@ class neuralSpeechCodingModule(object):
         """
         Conduct validation during model training. 
         """
-        how_many = 1  # 10 if the_epoch > 100 else 1  # len(self._sep_val)
+        how_many = 10  # 10 if the_epoch > 100 else 1  # len(self._sep_val)
         min_len, snr_list, si_snr_list = np.array([0] * how_many), np.array([0.0] * how_many), np.array([0.0] * how_many)
         the_stoi, the_pesqs = np.array([0.0] * how_many), np.array([0.0] * how_many)
         fully_snr_list, fully_the_pesqs, fully_the_entropy = np.array([0.0] * how_many), np.array(
@@ -691,7 +699,7 @@ class neuralSpeechCodingModule(object):
             # print('signal ', i, 'snr: ', snr_list[i])
             _quan_loss_arr[i] = np.mean(_quan_loss_arr_each)
 
-
+        np.save('bins' + self._rand_model_id + str(the_epoch) + '.npy', _interested_var[4])
         sdr_return_it = np.sum(min_len * snr_list / np.sum(min_len))
         si_snr_return_it = np.sum(min_len * si_snr_list / np.sum(min_len))
         stoi_return_it = np.sum(min_len * the_stoi / np.sum(min_len))
@@ -792,16 +800,17 @@ class neuralSpeechCodingModule(object):
                 # print(_interested_var[6], np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
                 # each_entropy.append(np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
                 # each_entropy.append(np.array(_interested_var[6]))
-                if len(_interested_var[6]) == 3:
+                if len(_interested_var[6]) <= 3:
                     each_entropy = np.append(each_entropy, np.array(_interested_var[6]))
 
                 if isinstance(_interested_var[5], np.ndarray):
                     all_entropy_fully[j] = np.mean(_interested_var[5])
                 else:
                     all_entropy_fully[j] = _interested_var[5]
-            each_entropy = np.reshape(each_entropy, (-1, 3))
+            each_entropy = np.reshape(each_entropy, (-1, len(np.array(_interested_var[6]))))
             average_entropy_each_mod = np.mean(each_entropy, axis=0)
             print(average_entropy_each_mod)
+
             self._write_to_file_and_update_to_display(str(average_entropy_each_mod) + ', ')
             each_entropy = np.mean(np.sum(ent_list / np.sum(ent_list) * np.mean(each_entropy, axis=0)))
             # print(each_entropy)
@@ -871,7 +880,7 @@ class neuralSpeechCodingModule(object):
             trainop2_list = [trainop2_no_quan, trainop2_quan_init]
 
             saver = tf.compat.v1.train.Saver()
-            interested_var = [time_loss, freq_loss, quantization_loss, ent_loss, ent_loss, ent_loss, encoded]
+            interested_var = [time_loss, freq_loss, quantization_loss, ent_loss, bins, ent_loss, encoded]
             with tf.compat.v1.Session() as sess:
                 sess.run(tf.compat.v1.global_variables_initializer())
                 self.model_training(sess, x=x, x_=x_, lr=lr, the_share=the_share, tau=tau,
@@ -978,6 +987,8 @@ class neuralSpeechCodingModule(object):
             freq_loss = mfcc_loss(decoded, res_x[:, :, 0])
             quantization_loss = quan_loss(_softmax_assignment)
             ent_loss = entropy_coding_loss(_softmax_assignment)
+            ent_loss_list = [entropy_coding_loss(soft_assignment_lpc),
+                             entropy_coding_loss(_softmax_assignment)]
 
             loss_no_quan = self._coeff_term[0] * time_loss + self._coeff_term[1] * freq_loss
             loss_quan_init = self._coeff_term[0] * time_loss + \
@@ -992,7 +1003,7 @@ class neuralSpeechCodingModule(object):
             trainop2_list = [trainop2_no_quan, trainop2_quan_init]
 
             saver = tf.compat.v1.train.Saver()
-            interested_var = [time_loss, freq_loss, quantization_loss, lpc_bins, _softmax_assignment, ent_loss, ent_loss, encoded]
+            interested_var = [time_loss, freq_loss, quantization_loss, lpc_bins, _softmax_assignment, ent_loss, ent_loss_list, encoded]
             with tf.compat.v1.Session() as sess:
                 sess.run(tf.compat.v1.global_variables_initializer())
                 self.model_training_lpc(sess, x=x, x_=x_, lr=lr, the_share=the_share, lpc_x=lpc_x, synthesized=synthesized,

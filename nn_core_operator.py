@@ -28,6 +28,7 @@ def activation_func(_x):
     #return pos + neg
     #return tf.nn.elu(_x)
     return tf.nn.leaky_relu(_x)
+    # return tf.nn.relu(_x)
 
 
 def batch_norm(_x, training):

@@ -532,7 +532,7 @@ class CMRL(neuralSpeechCodingModule):
         """
         Conduct the feedforward to evaluate audio clips in the test dataset.
         """
-        num_of_test_files = len(self._sep_test)
+        num_of_test_files = 10  # len(self._sep_test)
         min_len, snr_list, si_snr_list = \
             np.array([0] * num_of_test_files), np.array([0.0] * num_of_test_files), np.array([0.0] * num_of_test_files)
         the_stoi, the_pesqs = np.array([0.0] * num_of_test_files), np.array([0.0] * num_of_test_files)
@@ -562,6 +562,7 @@ class CMRL(neuralSpeechCodingModule):
                 np.float32)
 
             all_entropy = np.array([0.0] * segments_per_utterance.shape[0])
+            each_entropy = np.array([])
             for j in range(segments_per_utterance.shape[0]):
                 feed_x = np.reshape(segments_per_utterance[j], (1, frame_length, 1))
                 _interested_var, _decoded = sess.run(
@@ -578,6 +579,17 @@ class CMRL(neuralSpeechCodingModule):
                 #_encoded_sig_1[j * (code_segment_len): j * (code_segment_len) + code_segment_len] = _encoded_1[0, :]
                 #_encoded_sig_2[j * (code_segment_len): j * (code_segment_len) + code_segment_len] = _encoded_2[0, :]
                 all_entropy[j] = _interested_var[-1]
+                #ent_list = np.array([16.0, 256]) if len(np.array(_interested_var[6])) == 2 else np.array(
+                #    [16.0, 256, 256])
+                # print(_interested_var[6], np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
+                # each_entropy.append(np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
+                # each_entropy.append(np.array(_interested_var[6]))
+                #if len(_interested_var[6]) == 3:
+                #    each_entropy = np.append(each_entropy, np.array(_interested_var[6]))
+
+            # average_entropy_each_mod = np.mean(each_entropy, axis=0)
+            # print(average_entropy_each_mod)
+
             per_sig *= the_std
             _decoded_sig *= the_std
 
@@ -609,7 +621,7 @@ class CMRL(neuralSpeechCodingModule):
 
     def cmrl_eval_lpc(self, sess, x, x_, lr, lpc_x, synthesized, tau, the_share, is_quan_on, loss1, encoded_1,
                       encoded_2, decoded, alpha, lpc_bins, bins_1, bins_2, how_many, the_epoch, interested_var=None):
-        num_of_test_files = len(self._sep_test)
+        num_of_test_files = 1  # len(self._sep_test)
         min_len, snr_list = np.array([0] * num_of_test_files), np.array([0.0] * num_of_test_files)
         the_stoi, the_pesqs = np.array([0.0] * num_of_test_files), np.array([0.0] * num_of_test_files)
         _quan_loss_arr = np.array([0.0] * num_of_test_files)
@@ -626,7 +638,9 @@ class CMRL(neuralSpeechCodingModule):
         _bins_1 = np.array([0.0] * 64)
         _bins_2 = np.array([0.0] * 64)
 
+
         for i in range(num_of_test_files):
+            # print(self._sep_test[i])
             per_sig, the_std = self._load_sig_lpc(self._sep_test[i])
             # segments_per_utterance = self.utterance_to_segment(per_sig, True)
 
@@ -656,8 +670,7 @@ class CMRL(neuralSpeechCodingModule):
             # segments_per_utterance_res = segments_per_utterance_res * self._lpc_res_scaler
             segments_per_utterance = utterance_to_segment(per_sig_highpass_empha_filtered[256:], True)
 
-
-
+            each_entropy = np.array([])
             for j in range(segments_per_utterance.shape[0] - 2):
                 feed_x = np.reshape(segments_per_utterance[j], (1, frame_length, 1))
                 feed_lpc_coeff = np.reshape(segments_per_utterance_coeff[j], (1, self._lpc_order, 1))
@@ -680,8 +693,19 @@ class CMRL(neuralSpeechCodingModule):
 
                 _encoded_sig_1[j * (code_segment_len_1): j * (code_segment_len_1) + code_segment_len_1] += _encoded_1  # [0,:]
                 _encoded_sig_2[j * (code_segment_len_2): j * (code_segment_len_2) + code_segment_len_2] += _encoded_2  # [0,:]
-                all_entropy[j] = _interested_var[-1]
-                lpc_entropy[j] = _interested_var[-2]
+                all_entropy[j] = _interested_var[4]
+                lpc_entropy[j] = _interested_var[3]
+
+                ent_list = np.array([16.0, 256]) if len(np.array(_interested_var[6])) == 2 else np.array(
+                    [16.0, 256, 256])
+                # print(_interested_var[6], np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
+                # each_entropy.append(np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
+                # each_entropy.append(np.array(_interested_var[6]))
+                if len(_interested_var[6]) == 3 or len(_interested_var[6]) == 2:
+                    each_entropy = np.append(each_entropy, np.array(_interested_var[6]))
+            print(each_entropy)
+            average_entropy_each_mod = np.mean(each_entropy, axis=0)
+            print(average_entropy_each_mod)
             # print(_bins)
             per_sig *= the_std
             _synthesized_sig = np.array(list((1 / empha_filter)(_synthesized_sig)))
@@ -802,11 +826,12 @@ class CMRL(neuralSpeechCodingModule):
             ent_loss_lpc = entropy_coding_loss(_soft_assignment_lpc)
             ent_loss_1 = entropy_coding_loss(_soft_assignment_[0])
             ent_loss = ent_loss_1
+            ent_loss_list = [ent_loss_lpc, ent_loss_1]
             if num_res == 2:
                 ent_loss_2 = entropy_coding_loss(_soft_assignment_[1])
                 ent_loss += ent_loss_2
             # quan_loss = tf.reduce_mean((tf.reduce_sum(tf.sqrt(_softmax_assignment + 1e-20), axis = -1) - 1.0), axis = -1)
-            interested_var = [time_loss, freq_loss, ent_loss_1, ent_loss_lpc, ent_loss]
+            interested_var = [time_loss, freq_loss, ent_loss_1, ent_loss_lpc, ent_loss, ent_loss, ent_loss_list]
 
             saver = tf.compat.v1.train.Saver()
             with tf.compat.v1.Session() as sess:
@@ -856,17 +881,21 @@ class CMRL(neuralSpeechCodingModule):
             # Train just one AE
             # self.one_ae_vq()
             print('one_ae')
-            # self.one_ae()
-            #print('one_ae_lpc')
-            self.one_ae_lpc()
+            if is_pure_time_domain:
+                self.one_ae()
+            else:
+                self.one_ae_lpc()
         elif training_mode == 'cascaded':
             # Train multiple AE in CMRL
             # self.one_ae_vq()
-            self.one_ae_lpc()
-            # self.one_ae()
-            for i in range(1, self._num_resnets):
-                # self._greedy_followers(i)
-                self._greedy_followers_lpc(i)
+            if is_pure_time_domain:
+                self.one_ae()
+                for i in range(1, self._num_resnets):
+                    self._greedy_followers(i)
+            else:
+                self.one_ae_lpc()
+                for i in range(1, self._num_resnets):
+                    self._greedy_followers_lpc(i)
             # self._finetuning(self._num_resnets)
             # self._greedy_followers_dumb(self._num_resnets)
         elif training_mode == 'retrain_from_somewhere':
@@ -882,7 +911,10 @@ class CMRL(neuralSpeechCodingModule):
         elif training_mode == 'feedforward':
             model_id = arg.base_model_id
             self._rand_model_id = model_id
+            if is_pure_time_domain:
+                self._feedforward(self._num_resnets)
             # self._feedforward(self._num_resnets)
-            self._feedforward_lpc(self._num_resnets)
+            else:
+                self._feedforward_lpc(self._num_resnets)
         else:
             pass

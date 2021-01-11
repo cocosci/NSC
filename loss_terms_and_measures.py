@@ -168,6 +168,9 @@ def mfcc_loss(decoded_sig, original_sig, is_finetuning=False):
 
     distances = []
     for i in range(0, len(pvec_true)):
+        # For the highest resolution, focuse on low frequencies.
+        if pvec_pred[i].shape[0] == 128:
+            pvec_pred[i][64:] = pvec_true[i][64:]
         error = tf.expand_dims(mse_loss_v1(pvec_pred[i], pvec_true[i]), axis=-1)
         distances.append(error)
     distances = tf.concat(distances, axis=-1)

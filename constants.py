@@ -17,6 +17,7 @@ else:
     max_amp_tr = 22.307652973859113  # lpc time domain
 
 frame_length = 512
+conv_mu = 255.0
 overlap_each_side = 32
 training_data_size = 500000
 selected_ind = [8.0, 16.0, 32.0, 128.0]
