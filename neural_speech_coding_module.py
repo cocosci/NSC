@@ -268,7 +268,8 @@ class neuralSpeechCodingModule(object):
             hidden_1, floating_code = self._the_encoder_in_each_module(encoded, the_strides, the_share)
             print('floating_code', floating_code.shape)
             # floating_code = differential_coding_subtract(floating_code)
-            # floating_code = mu_law_mapping(floating_code, mu=conv_mu)
+            if mu_law_transform:
+                floating_code = mu_law_mapping(floating_code, mu=conv_mu)
             soft_assignment_3d, the_final_code = scalar_softmax_quantization(floating_code,
                                                                              alpha,
                                                                              bins,
@@ -276,7 +277,9 @@ class neuralSpeechCodingModule(object):
                                                                              the_share,
                                                                              frame_length // (2**len(the_strides)),
                                                                              number_bins)
-            # the_final_code = inverse_mu_law_mapping(the_final_code, mu=conv_mu)
+            if mu_law_transform:
+                the_final_code = inverse_mu_law_mapping(the_final_code, mu=conv_mu)
+
             hidden_2, expand_back = self._the_decoder_in_each_module(the_final_code, the_strides, the_share)
             print('model parameters:',
                   np.sum([np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()]))
@@ -302,7 +305,8 @@ class neuralSpeechCodingModule(object):
             _, floating_code = self._the_encoder_in_each_module(encoded, the_strides, the_share)
             print('floating_code############', floating_code.shape)
 
-            floating_code = mu_law_mapping(floating_code, mu=conv_mu)
+            if mu_law_transform:
+                floating_code = mu_law_mapping(floating_code, mu=conv_mu)
             soft_assignment_3d, the_final_code = scalar_softmax_quantization(floating_code,
                                                                              alpha,
                                                                              bins,
@@ -311,8 +315,9 @@ class neuralSpeechCodingModule(object):
                                                                              frame_length // (2**len(the_strides)),
                                                                              # frame_length // the_strides,
                                                                              number_bins)
-            the_final_code = inverse_mu_law_mapping(the_final_code, mu=conv_mu)
-            
+            if mu_law_transform:
+                the_final_code = inverse_mu_law_mapping(the_final_code, mu=conv_mu)
+
             _, expand_back = self._the_decoder_in_each_module(the_final_code, the_strides, the_share)
             print('model parameters:',
                   np.sum([np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()]))
@@ -957,6 +962,7 @@ class neuralSpeechCodingModule(object):
                                                                                   the_share,
                                                                                   self._lpc_order,
                                                                                   lpc_bins_len)
+
                 print(quan_lpc_coeff.shape, 'quan_lpc_coeff shape')  # [None, 16, 1]
                 quan_lpc_coeff = quan_lpc_coeff[:, :, 0]
                 quan_lpc_coeff = tf.reshape(quan_lpc_coeff, (-1, self._lpc_order))
@@ -983,12 +989,21 @@ class neuralSpeechCodingModule(object):
 
             # time_loss = mse_loss(synthesized, x_[:, :, 0])
             # time_loss = mse_loss_v1(decoded, res_x[:, :, 0])
+            ent_list = tf.cast([16.0, 256.0], tf.float32) if self._the_strides[0] == 2 \
+                else tf.cast([16.0, 128.0], tf.float32)
+
             time_loss = mse_loss(decoded, res_x[:, :, 0])
             freq_loss = mfcc_loss(decoded, res_x[:, :, 0])
-            quantization_loss = quan_loss(_softmax_assignment)
-            ent_loss = entropy_coding_loss(_softmax_assignment)
-            ent_loss_list = [entropy_coding_loss(soft_assignment_lpc),
-                             entropy_coding_loss(_softmax_assignment)]
+
+            quantization_loss = quan_loss(soft_assignment_lpc) * ent_list[0]/tf.reduce_sum(ent_list) + \
+                                quan_loss(_softmax_assignment) * ent_list[1]/tf.reduce_sum(ent_list)
+
+            ent_loss_list = tf.cast([entropy_coding_loss(soft_assignment_lpc),
+                             entropy_coding_loss(_softmax_assignment)], tf.float32)
+
+
+            ent_loss = tf.reduce_mean(tf.reduce_sum(ent_list / tf.reduce_sum(ent_list) * ent_loss_list))
+
 
             loss_no_quan = self._coeff_term[0] * time_loss + self._coeff_term[1] * freq_loss
             loss_quan_init = self._coeff_term[0] * time_loss + \

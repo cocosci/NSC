@@ -6,24 +6,28 @@ import soundfile as sf
 
 def hann_process(utterance_seg, seg_ind, seg_amount):
     hop_size = frame_length - overlap_each_side # followed bloomberg paper
-    the_window = np.append(np.append(np.hanning(overlap_each_side*2)[:(overlap_each_side)],  np.array([1] * (frame_length - overlap_each_side*2))), np.hanning(overlap_each_side*2)[(overlap_each_side):])
-    first_window= np.append(np.append(np.array([1]*(overlap_each_side)),  np.array([1] * (frame_length - overlap_each_side*2))), np.hanning(overlap_each_side*2)[(overlap_each_side):])
-    last_window = first_window= np.append(np.append(np.hanning(overlap_each_side*2)[:(overlap_each_side)],  np.array([1] * (frame_length - overlap_each_side*2))), np.array([1]*(overlap_each_side)))
+
+    the_window = np.append(np.append(np.hanning(overlap_each_side * 2 - 1)[:overlap_each_side],
+                                     np.array([1] * (frame_length - overlap_each_side * 2))),
+                           np.hanning(overlap_each_side * 2 - 1)[overlap_each_side - 1:])
+
+    first_window = np.append(np.append(np.array([1] * (overlap_each_side)),  np.array([1] * (frame_length - overlap_each_side*2))), np.hanning(overlap_each_side*2)[(overlap_each_side):])
+    last_window = np.append(np.append(np.hanning(overlap_each_side*2)[:(overlap_each_side)],  np.array([1] * (frame_length - overlap_each_side*2))), np.array([1]*(overlap_each_side)))
     if seg_ind == 0:
-        utterance_seg = utterance_seg*first_window
+        utterance_seg = utterance_seg * first_window
     elif seg_ind == seg_amount - 1:
-        utterance_seg = utterance_seg*last_window
+        utterance_seg = utterance_seg * last_window
     else:
-        utterance_seg = utterance_seg*the_window
+        utterance_seg = utterance_seg * the_window
     return utterance_seg
 
 
 def utterance_to_segment(utterance, post_window=False):
     ret = np.empty((len(range(0, len(utterance) - frame_length, frame_length - overlap_each_side)), frame_length))
     ind = 0
-    the_window = np.append(np.append(np.hanning(overlap_each_side * 2)[:overlap_each_side],
+    the_window = np.append(np.append(np.hanning(overlap_each_side * 2 - 1)[:overlap_each_side],
                                      np.array([1] * (frame_length - overlap_each_side * 2))),
-                           np.hanning(overlap_each_side * 2)[overlap_each_side:])
+                           np.hanning(overlap_each_side * 2 - 1)[overlap_each_side - 1:])
     if post_window:
         for i in range(0, len(utterance) - frame_length, frame_length - overlap_each_side):
             ret[ind, :] = utterance[i: (i + frame_length)] * 1
