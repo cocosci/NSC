@@ -54,12 +54,24 @@ def change_channel(the_input,
     return compressed_bit
 
 
-def the_bottleneck(the_input, wide_layer=30, narrow_layer=10, non_dilated_neck_kernel_size = 9, dilated_neck_kernel_size = 9, dilation_rate = 1, is_last_flat = False):
-    compressed_bit_2 = conv1d(the_input, narrow_layer, filter_size = non_dilated_neck_kernel_size, padding = 'SAME', dilation_rate = 1, activation = None)
+def the_bottleneck(the_input, wide_layer=30, narrow_layer=10, non_dilated_neck_kernel_size=9,
+                   dilated_neck_kernel_size=9, dilation_rate=1, is_last_flat=False):
+    compressed_bit_2 = conv1d(the_input, narrow_layer,
+                              filter_size=non_dilated_neck_kernel_size,
+                              padding='SAME',
+                              dilation_rate=1, activation=None)
     compressed_bit_2 = activation_func(compressed_bit_2)
-    compressed_bit_2 = conv1d(compressed_bit_2, narrow_layer, filter_size = dilated_neck_kernel_size, padding = 'SAME', dilation_rate = dilation_rate, activation = None)
+
+    compressed_bit_2 = conv1d(compressed_bit_2, narrow_layer,
+                              filter_size=dilated_neck_kernel_size,
+                              padding='SAME',
+                              dilation_rate=dilation_rate, activation=None)
     compressed_bit_2 = activation_func(compressed_bit_2)
-    compressed_bit_2 = conv1d(compressed_bit_2, wide_layer, filter_size = non_dilated_neck_kernel_size, padding = 'SAME', dilation_rate = 1, activation = None)
+
+    compressed_bit_2 = conv1d(compressed_bit_2, wide_layer,
+                              filter_size=non_dilated_neck_kernel_size,
+                              padding='SAME',
+                              dilation_rate=1, activation=None)
     # compressed_bit_2 = activation_func(compressed_bit_2)
     if not is_last_flat:
         return activation_func(compressed_bit_2 + the_input)
@@ -70,7 +82,6 @@ def the_bottleneck(the_input, wide_layer=30, narrow_layer=10, non_dilated_neck_k
 def gated_bottleneck(the_input, wide_layer=30, narrow_layer=10, non_dilated_neck_kernel_size=9, dilated_neck_kernel_size = 9, dilation_rate = 1, is_last_flat = False, the_share=False):
     compressed_bit_2 = conv1d(the_input, narrow_layer,
                               filter_size=1,
-                              # filter_size=dilated_neck_kernel_size,
                               padding='SAME',
                              dilation_rate=1, activation=None)
     # compressed_bit_2 = batch_norm(compressed_bit_2, the_share)
@@ -80,7 +91,7 @@ def gated_bottleneck(the_input, wide_layer=30, narrow_layer=10, non_dilated_neck
                                    # filter_size=dilated_neck_kernel_size,
                                    filter_size=15,
                                    padding='SAME',
-                             dilation_rate=dilation_rate, activation=None)
+                                   dilation_rate=dilation_rate, activation=None)
     compressed_bit_3_right = conv1d(compressed_bit_2, narrow_layer,
                                     # filter_size=dilated_neck_kernel_size,
                                     filter_size=15,

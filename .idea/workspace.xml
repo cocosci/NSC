@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69dd7bb4-2846-4214-b7b3-45ada8072a26" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmrl.py" afterPath="$PROJECT_DIR$/cmrl.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constants.py" afterPath="$PROJECT_DIR$/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loss_terms_and_measures.py" afterPath="$PROJECT_DIR$/loss_terms_and_measures.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/neural_speech_coding_module.py" afterPath="$PROJECT_DIR$/neural_speech_coding_module.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utilities.py" afterPath="$PROJECT_DIR$/utilities.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nn_core_operator.py" afterPath="$PROJECT_DIR$/nn_core_operator.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,8 +21,8 @@
       <file leaf-file-name="cmrl.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cmrl.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="507" column="90" lean-forward="false" selection-start-line="507" selection-start-column="55" selection-end-line="507" selection-end-column="90" />
+            <state relative-caret-position="3319">
+              <caret line="364" column="88" lean-forward="false" selection-start-line="364" selection-start-column="76" selection-end-line="364" selection-end-column="88" />
               <folding />
             </state>
           </provider>
@@ -30,8 +31,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
+            <state relative-caret-position="281">
+              <caret line="35" column="35" lean-forward="true" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -40,8 +41,8 @@
       <file leaf-file-name="lpc_utilities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -49,11 +50,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="neural_speech_coding_module.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="neural_speech_coding_module.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="303" column="42" lean-forward="false" selection-start-line="303" selection-start-column="34" selection-end-line="303" selection-end-column="42" />
+            <state relative-caret-position="-569">
+              <caret line="496" column="16" lean-forward="false" selection-start-line="496" selection-start-column="16" selection-end-line="496" selection-end-column="16" />
+              <caret line="497" column="16" lean-forward="false" selection-start-line="497" selection-start-column="16" selection-end-line="497" selection-end-column="16" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -64,8 +66,8 @@
       <file leaf-file-name="utilities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utilities.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="9" column="4" lean-forward="true" selection-start-line="9" selection-start-column="4" selection-end-line="14" selection-end-column="183" />
+            <state relative-caret-position="490">
+              <caret line="45" column="4" lean-forward="false" selection-start-line="45" selection-start-column="4" selection-end-line="48" selection-end-column="64" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -73,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="loss_terms_and_measures.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="loss_terms_and_measures.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="181" column="92" lean-forward="false" selection-start-line="181" selection-start-column="92" selection-end-line="181" selection-end-column="92" />
+            <state relative-caret-position="91">
+              <caret line="279" column="8" lean-forward="false" selection-start-line="279" selection-start-column="4" selection-end-line="279" selection-end-column="8" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -88,8 +90,8 @@
       <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/constants.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="20" column="12" lean-forward="false" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+            <state relative-caret-position="247">
+              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -98,9 +100,11 @@
       <file leaf-file-name="nn_core_operator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="30" column="6" lean-forward="false" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-              <folding />
+            <state relative-caret-position="1368">
+              <caret line="74" column="52" lean-forward="false" selection-start-line="74" selection-start-column="52" selection-end-line="74" selection-end-column="52" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -109,36 +113,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>eval_metrics</find>
-      <find>def e</find>
-      <find>bins =</find>
-      <find>training_data_size</find>
-      <find>inverse_mu_law_mapping</find>
-      <find>quan</find>
-      <find>a</find>
-      <find>quan_loss</find>
-      <find>end2end_eval</find>
-      <find>def end2end_eval</find>
-      <find>re</find>
-      <find>def _the_encoder_in_each_module</find>
-      <find>relu</find>
-      <find>entro</find>
-      <find>end2end_eval_lpc</find>
-      <find>model_training_lpc</find>
-      <find>_the_encoder_in_each_module</find>
-      <find>eval_lp</find>
-      <find>entropy_coding_loss</find>
-      <find>def computational_graph_end2end_quan_on_lpc</find>
-      <find>hann_process</find>
-      <find>DEF computational_graph_end2end_quan_on</find>
-      <find>_feedforward</find>
-      <find>def _feedforward</find>
+      <find>all</find>
+      <find>def all_modules_feedforward_</find>
       <find>def all_modules_feedforward</find>
-      <find>computational_graph_end2end_quan_on</find>
-      <find>def computational_graph_end2end_quan_on</find>
-      <find>conv_mu</find>
-      <find>computational_graph_end2end_quan_on_lpc</find>
-      <find>tf_stft</find>
+      <find>def cmrl</find>
+      <find>def _load_sig_lpc</find>
+      <find>def cmrl_eval_lpc</find>
+      <find>upsa</find>
+      <find>_greedy_followers</find>
+      <find>decoding</find>
+      <find>def _f</find>
+      <find>def e</find>
+      <find>_write_to_file_and_update_to_display</find>
+      <find>end2end_eval</find>
+      <find>fully_snr</find>
+      <find>def</find>
+      <find>end2</find>
+      <find>end2end_E</find>
+      <find>the_bottleneck</find>
+      <find>gated_bottleneck</find>
+      <find>l</find>
+      <find>lazy</find>
+      <find>_save_unique_mark</find>
+      <find>def mo</find>
+      <find>d</find>
+      <find>def</find>
+      <find>def pesq</find>
+      <find>end2end_final_eval</find>
+      <find>eval_metrics</find>
+      <find>def _fine</find>
+      <find>def eval_metrics</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -149,20 +153,19 @@
       <list>
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/lpc_utilities.py" />
+        <option value="$PROJECT_DIR$/loss_terms_and_measures.py" />
+        <option value="$PROJECT_DIR$/utilities.py" />
         <option value="$PROJECT_DIR$/nn_core_operator.py" />
         <option value="$PROJECT_DIR$/cmrl.py" />
-        <option value="$PROJECT_DIR$/utilities.py" />
         <option value="$PROJECT_DIR$/constants.py" />
         <option value="$PROJECT_DIR$/neural_speech_coding_module.py" />
-        <option value="$PROJECT_DIR$/loss_terms_and_measures.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="2021" />
     <option name="y" value="23" />
-    <option name="width" value="2415" />
-    <option name="height" value="925" />
+    <option name="width" value="1440" />
+    <option name="height" value="828" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -179,8 +182,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -195,6 +196,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -294,10 +297,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2021" y="23" width="2415" height="925" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="828" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1462284" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2539342" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -485,7 +488,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2888">
           <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -547,7 +552,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2888">
           <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -609,7 +616,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2888">
           <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -661,7 +670,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2888">
           <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -725,7 +736,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2888">
           <caret line="154" column="31" lean-forward="false" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -737,26 +750,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="67" />
-          <folding />
+        <state relative-caret-position="1368">
+          <caret line="74" column="52" lean-forward="false" selection-start-line="74" selection-start-column="52" selection-end-line="74" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nn_core_operator.py">
+    <entry file="file://$PROJECT_DIR$/constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="30" column="6" lean-forward="false" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
+        <state relative-caret-position="247">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lpc_utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="279" column="8" lean-forward="false" selection-start-line="279" selection-start-column="4" selection-end-line="279" selection-end-column="8" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -765,8 +790,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="4" lean-forward="true" selection-start-line="9" selection-start-column="4" selection-end-line="14" selection-end-column="183" />
+        <state relative-caret-position="490">
+          <caret line="45" column="4" lean-forward="false" selection-start-line="45" selection-start-column="4" selection-end-line="48" selection-end-column="64" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
@@ -775,36 +800,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cmrl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="507" column="90" lean-forward="false" selection-start-line="507" selection-start-column="55" selection-end-line="507" selection-end-column="90" />
+        <state relative-caret-position="3319">
+          <caret line="364" column="88" lean-forward="false" selection-start-line="364" selection-start-column="76" selection-end-line="364" selection-end-column="88" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/constants.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="20" column="12" lean-forward="false" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+        <state relative-caret-position="281">
+          <caret line="35" column="35" lean-forward="true" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/neural_speech_coding_module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="303" column="42" lean-forward="false" selection-start-line="303" selection-start-column="34" selection-end-line="303" selection-end-column="42" />
+        <state relative-caret-position="-569">
+          <caret line="496" column="16" lean-forward="false" selection-start-line="496" selection-start-column="16" selection-end-line="496" selection-end-column="16" />
+          <caret line="497" column="16" lean-forward="false" selection-start-line="497" selection-start-column="16" selection-end-line="497" selection-end-column="16" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/loss_terms_and_measures.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="181" column="92" lean-forward="false" selection-start-line="181" selection-start-column="92" selection-end-line="181" selection-end-column="92" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>

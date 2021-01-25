@@ -74,7 +74,7 @@ class neuralSpeechCodingModule(object):
         """
         Write model training and test outputs to a doc.
         """
-        self._file_handler = open('./doc/' + self._rand_model_id + self._suffix+ '_journal.txt', 'a')
+        self._file_handler = open('./doc/' + self._rand_model_id + self._suffix + self._save_unique_mark + '_journal.txt', 'a')
         self._file_handler.write(the_string)
         self._file_handler.close()
 
@@ -85,7 +85,14 @@ class neuralSpeechCodingModule(object):
         """
         s, sr = librosa.load(the_wav_file, sr=None)  # saving redundantly many speech sources (easier to handle)
         the_scaler = np.std(s) * self._max_amp
+        # s_1 = s/np.std(s)
+        # s_2 = s/np.max(np.abs(s_1))
+        # the_scaler = np.max(s_2) / np.max(s)
+
+        # print('before norm', np.max(s))
+        # print(np.std(s), self._max_amp, the_scaler)
         s /= the_scaler
+        # print('after norm', np.max(s))
         return s, the_scaler
 
     def _load_sig_lpc(self, the_wav_file):
@@ -160,12 +167,15 @@ class neuralSpeechCodingModule(object):
         return r
 
     def _up_sampling_mod(self, the_input, the_stride=2):
-        the_output = conv1d_depth(the_input, the_input.shape[-1], filter_size=9, padding='SAME', dilation_rate=1,
-                                  strides=1,
-                                  activation=None)
-        # the_output = conv1d(the_input, the_input.shape[-1], filter_size=9, padding='SAME', dilation_rate=1,
-        #                     strides=1,
-        #                     activation=None)
+        if resnet_type=='bottleneck':
+            the_output = conv1d(the_input, the_input.shape[-1], filter_size=9, padding='SAME', dilation_rate=1,
+                                strides=1,
+                                activation=None)
+        else:
+            the_output = conv1d_depth(the_input, the_input.shape[-1], filter_size=9, padding='SAME', dilation_rate=1,
+                                      strides=1,
+                                      activation=None)
+
         the_output = activation_func(the_output)
         the_output = self._up_sampling_mod_helper(the_output, the_stride=the_stride)
         return the_output
@@ -184,24 +194,17 @@ class neuralSpeechCodingModule(object):
         for i in range(len(
                 self._bottleneck_kernel_and_dilation) - 4):  # the first one is the kernel # second is the wide layer
             flag = i == (len(self._bottleneck_kernel_and_dilation) - 5)
-            #compressed_bit = the_bottleneck(compressed_bit,
-            #                                non_dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[1],
-            #                                dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[0],
-            #                                wide_layer=wide_layer,
-            #                                narrow_layer=self._bottleneck_kernel_and_dilation[3],
-            #                                dilation_rate=self._bottleneck_kernel_and_dilation[i + 4],
-            #                                is_last_flat=flag)
-            if is_enc:
-                compressed_bit = gated_bottleneck(compressed_bit,
-                                                  non_dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[1],
-                                                  dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[0],
-                                                  wide_layer=wide_layer,
-                                                  narrow_layer=self._bottleneck_kernel_and_dilation[3],
-                                                  dilation_rate=self._bottleneck_kernel_and_dilation[i + 4],
-                                                  is_last_flat=flag,
-                                                  the_share=the_share)
+            if resnet_type == 'bottleneck':
+                print(resnet_type)
+                compressed_bit = the_bottleneck(compressed_bit,
+                                                non_dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[1],
+                                                dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[0],
+                                                wide_layer=wide_layer,
+                                                narrow_layer=self._bottleneck_kernel_and_dilation[3],
+                                                dilation_rate=self._bottleneck_kernel_and_dilation[i + 4],
+                                                is_last_flat=flag)
             else:
-                # Future work: the bottleneck for the decoder can be even simpler.
+                print(resnet_type)
                 compressed_bit = gated_bottleneck(compressed_bit,
                                                   non_dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[1],
                                                   dilated_neck_kernel_size=self._bottleneck_kernel_and_dilation[0],
@@ -210,6 +213,7 @@ class neuralSpeechCodingModule(object):
                                                   dilation_rate=self._bottleneck_kernel_and_dilation[i + 4],
                                                   is_last_flat=flag,
                                                   the_share=the_share)
+
         return compressed_bit
 
     def _the_encoder_in_each_module(self, the_input, the_stride, the_share):
@@ -284,7 +288,7 @@ class neuralSpeechCodingModule(object):
             print('model parameters:',
                   np.sum([np.prod(v.get_shape().as_list()) for v in tf.compat.v1.trainable_variables()]))
             # print('model parameters:',
-            #       [v for v in tf.compat.v1.trainable_variables()])
+            #       [v.shape for v in tf.compat.v1.trainable_variables()])
             print('end2end output shape:', expand_back.shape)
             # decode = inverse_mu_law_mapping(expand_back[:, :, 0], mu=conv_mu)
             return soft_assignment_3d, -1, -1, the_final_code[0, :, 0], expand_back[:, :, 0], alpha, bins, soft_assignment_3d
@@ -423,6 +427,8 @@ class neuralSpeechCodingModule(object):
         print('model_training is called.', flag)
         ave_snr, ave_stoi, ave_pesq = 0, 0, 0
         init_tau = the_tau_val
+        init_tau_1 = the_tau_val
+        init_tau_2 = the_tau_val
 
         for i in range(epoch):
             print('-----------------------')
@@ -447,7 +453,9 @@ class neuralSpeechCodingModule(object):
 
             for b_x, b_x_ in self._generate_one_epoch_end2end(self._tr_data, self._tr_data, self._batch_size):
                 sess.run(trainop2, feed_dict={x: b_x, x_: b_x_, lr: the_learning_rate, the_share: True,
-                                              tau: init_tau, is_quan_on: is_quan_on_val})
+                                              # tau: init_tau,
+                                              tau: np.reshape([init_tau_1, init_tau_2], (1, 2)),
+                                              is_quan_on: is_quan_on_val})
             elapsed = time.perf_counter() - start
             np.random.shuffle(self._tr_data)
 
@@ -455,17 +463,17 @@ class neuralSpeechCodingModule(object):
             if i % 1 == 0:
                 if type(decoded) == list:
                     decoded = np.sum(decoded, axis=0)
-                ave_snr, ave_si_snr, ave_stoi, ave_pesq, ave_linearity, _quan_loss, fully_snr, fully_pesq, \
+                ave_snr, ave_si_snr, ave_stoi, ave_pesq, ave_linearity, _quan_loss, ent_codec_1, ent_codec_2, \
                 fully_entropy = self.end2end_eval(sess, x, x_, lr, the_share, is_quan_on, flag, loss1,
                                                   encoded, decoded, alpha, bins, 100, i,
                                                   interested_var)
                 print(
                     'Epoch %3d: SNR: %7.5f dB  Si-SNR: %7.5f dB  STOI: %6.5f    PESQ: %6.5f   linearity: %6.5f  modelid: %s  '
-                    '_quan_loss: %6.5f,  fully_entropy: %6.5f , time: %.3f, tau: %.3f' % (
+                    '_quan_loss: %6.5f,  fully_entropy: %6.5f , time: %.3f, tau: %.3f, tau_1: %.3f, tau_2: %.3f' % (
                     i, ave_snr, ave_si_snr, ave_stoi, ave_pesq,
                     ave_linearity, self._rand_model_id,
                     _quan_loss, fully_entropy, elapsed,
-                    init_tau))
+                    init_tau, init_tau_1, init_tau_2))
 
                 # ave_snr, ave_si_snr, ave_stoi, ave_pesq, ave_linearity, _quan_loss, fully_snr, fully_pesq, fully_entropy = self.end2end_eval_not_pretrain(
                 #     sess, x, x_, lr, the_share, is_quan_on, flag, loss1, encoded, decoded, alpha, bins, 100, i,
@@ -486,16 +494,32 @@ class neuralSpeechCodingModule(object):
             ent_change = 0.015
             if flag == 'finetune':
                 ent_change *= 1
+                target_1 = 1.5
+                target_2 = 2.5
+                # target_1 = 2.0
+                # target_2 = 2.0
+                # target_1 = 2.5
+                # target_2 = 1.5
             # ent_change = 0.0
-            if fully_entropy > self._target_entropy:
-                init_tau += ent_change
-            elif fully_entropy < self._target_entropy:
-                init_tau -= ent_change
-            print('tau:', init_tau)
+                print(ent_codec_1, ent_codec_2)
+                if ent_codec_1 > target_1:
+                    init_tau_1 += ent_change
+                if ent_codec_1 < target_1:
+                    init_tau_1 -= ent_change
+                if ent_codec_2 > target_2:
+                    init_tau_2 += ent_change
+                if ent_codec_2 < target_2:
+                    init_tau_2 -= ent_change
+            else:
+                if fully_entropy > self._target_entropy:
+                    init_tau += ent_change
+                elif fully_entropy < self._target_entropy:
+                    init_tau -= ent_change
+            print('Tau: %7.5f, Tau_1: %7.5f, Tau_2: %7.5f'% (init_tau, init_tau_1, init_tau_2))
 
             self._write_to_file_and_update_to_display('Epoch %3d: SNR: %7.5f dB Si-SNR: %7.5f dB STOI: '
                                                       '%6.5f PESQ: %6.5f _quan_loss: %6.5f'
-                                                      'tau: %6.5f   fully_pesq: %6.5f  '
+                                                      'tau: %6.5f   '
                                                       'fully_entropy: %6.5f \n' % (i,
                                                                                    ave_snr,#np.mean(ave_snr),
                                                                                    ave_si_snr,#np.mean(ave_si_snr),
@@ -503,7 +527,6 @@ class neuralSpeechCodingModule(object):
                                                                                    ave_pesq,#np.mean(ave_pesq),
                                                                                    _quan_loss,#np.mean(_quan_loss),
                                                                                    init_tau,#init_tau,
-                                                                                   fully_pesq,#np.mean(fully_pesq),
                                                                                    fully_entropy))#np.mean(fully_entropy)))
 
         # pretrained_codebook = np.random.rand(code_book_size_val, bottle_neck_size)
@@ -641,6 +664,7 @@ class neuralSpeechCodingModule(object):
         the_stoi, the_pesqs = np.array([0.0] * how_many), np.array([0.0] * how_many)
         fully_snr_list, fully_the_pesqs, fully_the_entropy = np.array([0.0] * how_many), np.array(
             [0.0] * how_many), np.array([0.0] * how_many)
+        entropy_per_codec = np.array([])
         _quan_loss_arr = np.array([0.0] * how_many)
         the_linearitys = np.array([0.0] * how_many)
         all_loss = [0.0] * how_many
@@ -660,6 +684,8 @@ class neuralSpeechCodingModule(object):
             _quan_loss_arr_each = np.array([0.0] * segments_per_utterance.shape[0])
             entropy_per_segment = np.array([0.0] * segments_per_utterance.shape[0])
             lpc_entropy = np.array([0.0] * segments_per_utterance.shape[0])
+            each_entropy = np.array([])
+
 
             for j in range(segments_per_utterance.shape[0]):
                 feed_x = np.reshape(segments_per_utterance[j], (1, frame_length, 1))
@@ -688,11 +714,18 @@ class neuralSpeechCodingModule(object):
                 # _encoded_sig[j * bottle_neck_size: j * bottle_neck_size + bottle_neck_size] += _encoded
                 _quan_loss_arr_each[j] = _interested_var[2]
 
-
+                if len(_interested_var[4]) <= 3:
+                    each_entropy = np.append(each_entropy, np.array(_interested_var[4]))
                 if isinstance(_interested_var[5], np.ndarray):
                     entropy_per_segment[j] = np.mean(_interested_var[5])
                 else:
                     entropy_per_segment[j] = _interested_var[5]
+            if flag == 'finetune':
+                ent_list = np.array([256]) if len(np.array(_interested_var[4])) == 1 else np.array([256, 256])
+                each_entropy = np.reshape(each_entropy, (-1, len(np.array(_interested_var[4]))))
+                # each_entropy = np.mean(np.sum(ent_list / np.sum(ent_list) * np.mean(each_entropy, axis=0)))
+                each_entropy = np.mean(each_entropy, axis=0)
+                entropy_per_codec = np.append(entropy_per_codec, each_entropy)
 
             per_sig *= the_std
             _decoded_sig *= the_std
@@ -711,13 +744,20 @@ class neuralSpeechCodingModule(object):
         pesq_return_it = np.sum(min_len * the_pesqs / np.sum(min_len))
         print(si_snr_list, si_snr_return_it)
         print(the_pesqs, pesq_return_it)
+        if flag == 'finetune':
+            print(entropy_per_codec[::2])
+            print(entropy_per_codec[1::2])
+            self._write_to_file_and_update_to_display('codec-1: ' + str(entropy_per_codec[::2]))
+            self._write_to_file_and_update_to_display('codec-2: ' + str(entropy_per_codec[1::2]))
         linearity_return_it = np.sum(min_len * the_linearitys / np.sum(min_len))
         quan_return_it = np.sum(min_len * _quan_loss_arr / np.sum(min_len))
-        fully_sdr_return_it = np.sum(min_len * fully_snr_list / np.sum(min_len))
-        fully_pesq_return_it = np.sum(min_len * fully_the_pesqs / np.sum(min_len))
+        # fully_sdr_return_it = np.sum(min_len * fully_snr_list / np.sum(min_len))
+        ent_codec_1 = np.sum(min_len * entropy_per_codec[::2] / np.sum(min_len))
+        ent_codec_2 = np.sum(min_len * entropy_per_codec[1::2] / np.sum(min_len))
         fully_entropy_return_it = np.sum(min_len * fully_the_entropy / np.sum(min_len))
+
         return sdr_return_it, si_snr_return_it, stoi_return_it, pesq_return_it, linearity_return_it, quan_return_it, \
-               fully_sdr_return_it, fully_pesq_return_it, fully_entropy_return_it
+               ent_codec_1, ent_codec_2, fully_entropy_return_it
 
     def end2end_eval_lpc(self, sess, x, x_, lr, the_share, lpc_x, synthesized, res_x, is_quan_on, flag, loss1, encoded,
                          decoded, alpha, bins, how_many, the_epoch, interested_var=None):
@@ -801,7 +841,7 @@ class neuralSpeechCodingModule(object):
                 _quan_loss_arr_each[j] = _interested_var[2]
                 #
 
-                ent_list = np.array([16.0, 256]) if len(np.array(_interested_var[6])) == 2 else np.array([16.0, 256, 256])
+
                 # print(_interested_var[6], np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
                 # each_entropy.append(np.sum(ent_list/np.sum(ent_list) * _interested_var[6]))
                 # each_entropy.append(np.array(_interested_var[6]))
@@ -812,6 +852,7 @@ class neuralSpeechCodingModule(object):
                     all_entropy_fully[j] = np.mean(_interested_var[5])
                 else:
                     all_entropy_fully[j] = _interested_var[5]
+            ent_list = np.array([16.0, 256]) if len(np.array(_interested_var[6])) == 2 else np.array([16.0, 256, 256])
             each_entropy = np.reshape(each_entropy, (-1, len(np.array(_interested_var[6]))))
             average_entropy_each_mod = np.mean(each_entropy, axis=0)
             print(average_entropy_each_mod)
